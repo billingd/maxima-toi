@@ -1,10 +1,12 @@
 # TOI for maxima
 
-This code extends the symbolic integration routines of the <a href="">Maxima</a> computer algebra package using table lookup.  It is at an early stage of development.
+This code extends the symbolic integration routines of the [Maxima](http://maxima.sf.net) computer algebra package using table lookup.  It is at an early stage of development.
 
 The routine is inspired by the TILU (Table of Integration Look Up) program by Ted Einwohner, Richard Fateman and students at UC Berkeley.
 
 TILU has a sophisticated expression hash algorithm and is self-contained.  This code has a simpler hash routine which is adequate for the functions in the present lookup table. 
+
+**NOTE:** The code was intended to be included in the core maxima integration routine.  It doesn't attempt some simple housekeeping.  For example, it can't integrate expressions that are sums.
 
 # Quick start
 
@@ -30,11 +32,35 @@ Use `table_integrate()` function.  The existing table of integrals has approxima
       (bessel_j (p, a x) - bessel_j(p - 1, a x) bessel_j(p + 1, a x)) x
 (%o4) ------------------------------------------------------------------
                                       2
+</pre>
+
+## Examples
+
+Some further examples are given below.  
+
+<pre>
 (%i5) table_integrate(z^(n+1)*struve_h(n,z),z);
                                                n + 1
 (%o5)                      struve_h(n + 1, z) z
 (%i6) table_integrate(jacobi_sn(u,m)*jacobi_dn(u,m)/jacobi_cn(u,m),u);
 (%o6)                       - log(jacobi_cn(u, m))
+(%i7) table_integrate(x^(2*a+1)*hankel_2(a,2*x)^2,x);
+              - 1
+Is a equal to ---?
+               2
+
+n;
+                      2                       2           2 a + 2
+             (hankel_2 (a + 1, 2 x) + hankel_2 (a, 2 x)) x
+(%o7)        ----------------------------------------------------
+                                 2 (2 a + 1)
+(%i8)  table_integrate(x^3*hankel_2(2,2*x)^2,x);
+(%o8)                                false
+(%i9)  table_integrate(x^5*hankel_2(2,2*x)^2,x);
+                           2                   2           6
+                  (hankel_2 (3, 2 x) + hankel_2 (2, 2 x)) x
+(%o9)             ------------------------------------------
+                                      10
 </pre>
 
 ## Method
@@ -150,5 +176,5 @@ A number of support routines have been written to generate and check the table o
 
 ## References
 
-1. Einwohner, T. H., Fateman, Richard J., Searching techniques for integral tables, ISSAC '95, Proceedings of the 1995 international symposium on symbolic and algebraic computation, ISBN:0-89791-699-9, <a href="doi:10.1145/220346.220364">doi:10.1145/220346.220364</a>,
-<a href="http://www.cs.berkeley.edu/~fateman/papers/integrate.ps">Postscript</a>, <a href="http://www.cs.berkeley.edu/~fateman/tilu/">code (2018-07-03)
+1. Einwohner, T. H., Fateman, Richard J., Searching techniques for integral tables, ISSAC '95, Proceedings of the 1995 international symposium on symbolic and algebraic computation, ISBN:0-89791-699-9, [doi:10.1145/220346.220364](http://dx.doi.org/10.1145/220346.220364),
+[Postscript](www.cs.berkeley.edu/~fateman/papers/integrate.ps), [code (2018-07-03)](http://www.cs.berkeley.edu/~fateman/tilu/)
