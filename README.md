@@ -163,7 +163,7 @@ It can be run with the commands `make check` at the top level or in tests direct
 
 ### support code
 
-A number of support routines have been written to generate and check the table of integrals.  These are not ready for a wider audience.
+A number of support routines have been written to generate and check the table of integrals.  These are in the `tables` directory and described there.
 
 ## Further work
 
