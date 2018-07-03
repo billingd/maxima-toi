@@ -1,0 +1,379 @@
+/* test_toi_2.mac */
+
+/* cases generated automatically
+   restrictions aren't checked.  need to check manually
+
+load("generate-tests.lisp");
+load("toi_testing.lisp");
+load("contrib_ode");
+
+/* Evaluate integral using table_integrate
+   Check result using ode_check_tidy() from contrib_ode */
+(check_toi(integrand,x):=
+  block([integral,check],
+  integral:table_integrate(integrand,x),
+  if is(integral=false) then return(false),
+  check:ode_check_tidy(diff(integral,x)-integrand),
+  if is(check=0) then
+    integral
+  else
+    [integral,check]),0)$
+
+si:specific_integrals();
+
+for i in si do (ans:check_toi(i,x),
+  print("check_toi(",i,",x);"), print(ans,";"));
+
+cut and paste output
+*/
+
+
+/* bessel_y(p,x)*x^p, p # -1/2, DLMF 10.22.2 */
+check_toi(bessel_y(2,x)*x^2,x);
+(3*%pi*(struve_h(1,x)*bessel_y(2,x)-bessel_y(1,x)*struve_h(2,x))*x)/2;
+
+/* DLMF 10.22.2 bessel_y(p,x)*x^p Correctly reject order p = -1/2 */
+check_toi(bessel_y(-1/2,x)/sqrt(x),x);
+false;
+
+/* x*bessel_j(p,a*x)*bessel_y(p,b*x), a^2 # b^2, DLMF 10.22.4 */
+check_toi(bessel_j(2,3*x)*bessel_y(2,4*x)*x,x);
+-((3*bessel_y(2,4*x)*bessel_j(3,3*x)-4*bessel_j(2,3*x)*bessel_y(3,4*x))*x)/7;
+
+/* DLMF 10.22.1 GR 5.52.1 */
+check_toi(bessel_j(3,x)*x^4,x);
+bessel_j(4,x)*x^4;
+check_toi(bessel_y(2,x)*x^3,x);
+bessel_y(3,x)*x^3;
+check_toi(hankel_1(3,x)*x^4,x);
+hankel_1(4,x)*x^4;
+check_toi(hankel_2(3,x)*x^4,x);
+hankel_2(4,x)*x^4;
+
+/* DLMF 10.22.1 GR 5.52.2 */
+check_toi(bessel_j(4,x)/x^3,x);
+-bessel_j(3,x)/x^3;
+check_toi(bessel_y(4,x)/x^3,x);
+-bessel_y(3,x)/x^3;
+check_toi(hankel_1(2,x)/x,x);
+-hankel_1(1,x)/x;
+check_toi(hankel_2(4,x)/x^3,x);
+-hankel_2(3,x)/x^3;
+
+/* GR 5.54.1 */
+check_toi(bessel_j(4,2*x)^2*x,x);
+((bessel_j(4,2*x)^2-bessel_j(3,2*x)*bessel_j(5,2*x))*x^2)/2;
+check_toi(bessel_y(4,2*x)^2*x,x);
+((bessel_y(4,2*x)^2-bessel_y(3,2*x)*bessel_y(5,2*x))*x^2)/2;
+check_toi(hankel_1(3,x)^2*x,x);
+((hankel_1(3,x)^2-hankel_1(2,x)*hankel_1(4,x))*x^2)/2;
+check_toi(hankel_2(4,2*x)^2*x,x);
+((hankel_2(4,2*x)^2-hankel_2(3,2*x)*hankel_2(5,2*x))*x^2)/2;
+
+/* GR 5.56.2 */
+check_toi(bessel_j(0,x)*x,x);
+bessel_j(1,x)*x;
+check_toi(bessel_y(0,x)*x,x);
+bessel_y(1,x)*x;
+check_toi(hankel_1(0,x)*x,x);
+hankel_1(1,x)*x;
+check_toi(hankel_2(0,x)*x,x);
+hankel_2(1,x)*x;
+
+/* DLMF 10.22.2 */
+check_toi(bessel_j(1,x)*x,x);
+(%pi*(struve_h(0,x)*bessel_j(1,x)-bessel_j(0,x)*struve_h(1,x))*x)/2;
+check_toi(bessel_y(1,x)*x,x);
+(%pi*(struve_h(0,x)*bessel_y(1,x)-bessel_y(0,x)*struve_h(1,x))*x)/2;
+check_toi(hankel_1(1,x)*x,x);
+(%pi*(struve_h(0,x)*hankel_1(1,x)-hankel_1(0,x)*struve_h(1,x))*x)/2;
+
+/* DLMF 10.22.7 (i) with same Bessel function twice and u=v */
+check_toi(x^3*bessel_j(1,2*x)^2,x);
+((bessel_j(2,2*x)^2+bessel_j(1,2*x)^2)*x^4)/6;
+check_toi(x^5*bessel_y(2,2*x)^2,x);
+((bessel_y(3,2*x)^2+bessel_y(2,2*x)^2)*x^6)/10;
+check_toi(x^4*hankel_1(3/2,2*x)^2,x);
+((hankel_1(5/2,2*x)^2+hankel_1(3/2,2*x)^2)*x^5)/8;
+check_toi(x^7*hankel_1(3,2*x)^2,x);
+((hankel_1(4,2*x)^2+hankel_1(3,2*x)^2)*x^8)/14;
+block([r],
+  assume(notequal(a,-1/2)),
+  r:check_toi(x^(2*a+1)*hankel_2(a,2*x)^2,x),
+  forget(notequal(a,-1/2)),
+  r);
+((hankel_2(a+1,2*x)^2+hankel_2(a,2*x)^2)*x^(2*a+2))/(2*(2*a+1));
+
+/* DLMF 10.22.7 (ii) with same Bessel function twice and u=v */
+block([r],
+  assume(notequal(u,1/2)),
+  r:check_toi(x^(-2*u+1)*bessel_j(u,a*x)^2,x),
+  forget(notequal(u,1/2)),
+  r);
+((bessel_j(u,a*x)^2+bessel_j(u-1,a*x)^2)*x^(2-2*u))/(2*(1-2*u));
+block([r],
+  assume(notequal(u,1/4)),
+  r:check_toi(bessel_y(2*u,x)^2*x^(1-4*u),x),
+  forget(notequal(u,1/4)),
+  r);
+((bessel_y(2*u-1,x)^2+bessel_y(2*u,x)^2)*x^(2-4*u))/(2*(1-4*u));
+check_toi(hankel_1(3,2*x)^2/x^5,x);
+-((hankel_1(3,2*x)^2+hankel_1(2,2*x)^2)/(10*x^4));
+check_toi(hankel_2(3/2,2*x)^2/x^2,x);
+-((hankel_2(3/2,2*x)^2+hankel_2(1/2,2*x)^2)/(4*x));
+
+/* DLMF 10.22.4, GR 5.54.1 */
+check_toi(hankel_2(3,x)*x^3,x);
+(15*%pi*(struve_h(2,x)*hankel_2(3,x)-hankel_2(2,x)*struve_h(3,x))*x)/2;
+check_toi(bessel_j(1,x)*bessel_j(1,4*x)*x,x);
+-((bessel_j(1,4*x)*bessel_j(2,x)-4*bessel_j(1,x)*bessel_j(2,4*x))*x)/15;
+check_toi(bessel_j(1,3*x)*bessel_y(1,4*x)*x,x);
+-((3*bessel_y(1,4*x)*bessel_j(2,3*x)-4*bessel_j(1,3*x)*bessel_y(2,4*x))*x)/7;
+check_toi(bessel_j(2,2*x)*hankel_1(2,4*x)*x,x);
+-((2*hankel_1(2,4*x)*bessel_j(3,2*x)-4*bessel_j(2,2*x)*hankel_1(3,4*x))*x)/12;
+check_toi(hankel_2(2,x)*bessel_j(2,4*x)*x,x);
+((4*hankel_2(2,x)*bessel_j(3,4*x)-bessel_j(2,4*x)*hankel_2(3,x))*x)/15;
+check_toi(bessel_y(1,2*x)*bessel_y(1,3*x)*x,x);
+-((2*bessel_y(1,3*x)*bessel_y(2,2*x)-3*bessel_y(1,2*x)*bessel_y(2,3*x))*x)/5;
+check_toi(bessel_y(3,x)*hankel_1(3,3*x)*x,x);
+-((hankel_1(3,3*x)*bessel_y(4,x)-3*bessel_y(3,x)*hankel_1(4,3*x))*x)/8;
+check_toi(hankel_2(1,x)*bessel_y(1,2*x)*x,x);
+((2*hankel_2(1,x)*bessel_y(2,2*x)-bessel_y(1,2*x)*hankel_2(2,x))*x)/3;
+check_toi(hankel_1(4,3*x)*hankel_1(4,4*x)*x,x);
+-((3*hankel_1(4,4*x)*hankel_1(5,3*x)-4*hankel_1(4,3*x)*hankel_1(5,4*x))*x)/7;
+check_toi(hankel_1(3,3*x)*hankel_2(3,4*x)*x,x);
+-((3*hankel_2(3,4*x)*hankel_1(4,3*x)-4*hankel_1(3,3*x)*hankel_2(4,4*x))*x)/7;
+check_toi(hankel_2(2,x)*hankel_2(2,2*x)*x,x);
+-((hankel_2(2,2*x)*hankel_2(3,x)-2*hankel_2(2,x)*hankel_2(3,2*x))*x)/3;
+check_toi(bessel_j(2,2*x)^2*x,x);
+((bessel_j(2,2*x)^2-bessel_j(1,2*x)*bessel_j(3,2*x))*x^2)/2;
+
+/* DLMF 10.22.5 */
+check_toi(bessel_j(2,x)*bessel_y(2,x)*x,x);
+(((-bessel_j(1,x)*bessel_y(3,x))-bessel_y(1,x)*bessel_j(3,x)+2*bessel_j(2,x)*bessel_y(2,x))*x^2)/4;
+check_toi(bessel_j(2,3*x)*hankel_1(2,3*x)*x,x);
+(((-bessel_j(1,3*x)*hankel_1(3,3*x))-hankel_1(1,3*x)*bessel_j(3,3*x)+2*bessel_j(2,3*x)*hankel_1(2,3*x))*x^2)/4;
+check_toi(bessel_j(1,4*x)*hankel_2(1,4*x)*x,x);
+(((-bessel_j(0,4*x)*hankel_2(2,4*x))-hankel_2(0,4*x)*bessel_j(2,4*x)+2*bessel_j(1,4*x)*hankel_2(1,4*x))*x^2)/4;
+check_toi(bessel_y(2,x)^2*x,x);
+((bessel_y(2,x)^2-bessel_y(1,x)*bessel_y(3,x))*x^2)/2;
+check_toi(bessel_y(4,4*x)*hankel_1(4,4*x)*x,x);
+(((-bessel_y(3,4*x)*hankel_1(5,4*x))-hankel_1(3,4*x)*bessel_y(5,4*x)+2*bessel_y(4,4*x)*hankel_1(4,4*x))*x^2)/4;
+check_toi(bessel_y(1,x)*hankel_2(1,x)*x,x);
+(((-bessel_y(0,x)*hankel_2(2,x))-hankel_2(0,x)*bessel_y(2,x)+2*bessel_y(1,x)*hankel_2(1,x))*x^2)/4;
+check_toi(hankel_1(2,2*x)^2*x,x);
+((hankel_1(2,2*x)^2-hankel_1(1,2*x)*hankel_1(3,2*x))*x^2)/2;
+check_toi(hankel_1(1,4*x)*hankel_2(1,4*x)*x,x);
+(((-hankel_1(0,4*x)*hankel_2(2,4*x))-hankel_2(0,4*x)*hankel_1(2,4*x)+2*hankel_1(1,4*x)*hankel_2(1,4*x))*x^2)/4;
+check_toi(hankel_2(1,4*x)^2*x,x);
+((hankel_2(1,4*x)^2-hankel_2(0,4*x)*hankel_2(2,4*x))*x^2)/2;
+
+/* DLMF 10.22.6 */
+check_toi((bessel_j(1,3*x)*bessel_j(2,3*x))/x,x);
+(bessel_j(2,3*x)^2-bessel_j(1,3*x)*bessel_j(3,3*x))*x+(bessel_j(1,3*x)*bessel_j(2,3*x))/3;
+check_toi((bessel_j(1,4*x)*bessel_y(4,4*x))/x,x);
+(4*(bessel_j(2,4*x)*bessel_y(4,4*x)-bessel_j(1,4*x)*bessel_y(5,4*x))*x)/15+(bessel_j(1,4*x)*bessel_y(4,4*x))/5;
+check_toi((hankel_1(1,2*x)*bessel_j(4,2*x))/x,x);
+(hankel_1(1,2*x)*bessel_j(4,2*x))/5-(2*(hankel_1(1,2*x)*bessel_j(5,2*x)-hankel_1(2,2*x)*bessel_j(4,2*x))*x)/15;
+check_toi((bessel_j(1,3*x)*hankel_2(1,3*x))/x,x);
+-((bessel_j(1,3*x)*hankel_2(1,3*x)+bessel_j(0,3*x)*hankel_2(0,3*x))/2);
+check_toi((bessel_y(2,3*x)*bessel_y(4,3*x))/x,x);
+((bessel_y(3,3*x)*bessel_y(4,3*x)-bessel_y(2,3*x)*bessel_y(5,3*x))*x)/4+(bessel_y(2,3*x)*bessel_y(4,3*x))/6;
+check_toi((bessel_y(2,4*x)*hankel_1(4,4*x))/x,x);
+((bessel_y(3,4*x)*hankel_1(4,4*x)-bessel_y(2,4*x)*hankel_1(5,4*x))*x)/3+(bessel_y(2,4*x)*hankel_1(4,4*x))/6;
+check_toi((hankel_2(1,4*x)*bessel_y(4,4*x))/x,x);
+(hankel_2(1,4*x)*bessel_y(4,4*x))/5-(4*(hankel_2(1,4*x)*bessel_y(5,4*x)-hankel_2(2,4*x)*bessel_y(4,4*x))*x)/15;
+check_toi((hankel_2(2,x)*hankel_1(3,x))/x,x);
+(hankel_2(2,x)*hankel_1(3,x))/5-((hankel_2(2,x)*hankel_1(4,x)-hankel_1(3,x)*hankel_2(3,x))*x)/5;
+check_toi((hankel_2(3,x)*hankel_2(4,x))/x,x);
+
+/* DLMF 10.22.7 */
+((hankel_2(4,x)^2-hankel_2(3,x)*hankel_2(5,x))*x)/7+(hankel_2(3,x)*hankel_2(4,x))/7;
+check_toi(bessel_j(1,x)*bessel_j(2,x)*x^4,x);
+((bessel_j(2,x)*bessel_j(3,x)+bessel_j(1,x)*bessel_j(2,x))*x^5)/8;
+check_toi(bessel_j(2,x)*bessel_y(2,x)*x^5,x);
+((bessel_j(3,x)*bessel_y(3,x)+bessel_j(2,x)*bessel_y(2,x))*x^6)/10;
+check_toi(bessel_j(1,3*x)*hankel_1(1,3*x)*x^3,x);
+((bessel_j(2,3*x)*hankel_1(2,3*x)+bessel_j(1,3*x)*hankel_1(1,3*x))*x^4)/6;
+check_toi(hankel_2(3,2*x)*bessel_j(4,2*x)*x^8,x);
+((hankel_2(4,2*x)*bessel_j(5,2*x)+hankel_2(3,2*x)*bessel_j(4,2*x))*x^9)/16;
+check_toi(bessel_y(1,2*x)*bessel_y(2,2*x)*x^4,x);
+((bessel_y(2,2*x)*bessel_y(3,2*x)+bessel_y(1,2*x)*bessel_y(2,2*x))*x^5)/8;
+check_toi(bessel_y(3,x)*hankel_1(4,x)*x^8,x);
+((bessel_y(4,x)*hankel_1(5,x)+bessel_y(3,x)*hankel_1(4,x))*x^9)/16;
+check_toi(hankel_2(1,2*x)*bessel_y(4,2*x)*x^6,x);
+((hankel_2(2,2*x)*bessel_y(5,2*x)+hankel_2(1,2*x)*bessel_y(4,2*x))*x^7)/12;
+check_toi(hankel_1(1,x)*hankel_1(2,x)*x^4,x);
+((hankel_1(2,x)*hankel_1(3,x)+hankel_1(1,x)*hankel_1(2,x))*x^5)/8;
+check_toi(hankel_1(1,3*x)*hankel_2(2,3*x)*x^4,x);
+((hankel_1(2,3*x)*hankel_2(3,3*x)+hankel_1(1,3*x)*hankel_2(2,3*x))*x^5)/8;
+check_toi(hankel_2(2,x)*hankel_2(4,x)*x^7,x);
+((hankel_2(3,x)*hankel_2(5,x)+hankel_2(2,x)*hankel_2(4,x))*x^8)/14;
+
+/* DLMF 10.22.7 */
+check_toi((bessel_j(2,3*x)*bessel_j(3,3*x))/x^4,x);
+-((bessel_j(2,3*x)*bessel_j(3,3*x)+bessel_j(1,3*x)*bessel_j(2,3*x))/(8*x^3));
+check_toi((bessel_j(3,x)*bessel_y(3,x))/x^5,x);
+-((bessel_j(3,x)*bessel_y(3,x)+bessel_j(2,x)*bessel_y(2,x))/(10*x^4));
+check_toi((bessel_j(3,3*x)*hankel_1(3,3*x))/x^5,x);
+-((bessel_j(3,3*x)*hankel_1(3,3*x)+bessel_j(2,3*x)*hankel_1(2,3*x))/(10*x^4));
+check_toi((bessel_j(1,2*x)*hankel_2(4,2*x))/x^4,x);
+-((bessel_j(1,2*x)*hankel_2(4,2*x)+bessel_j(0,2*x)*hankel_2(3,2*x))/(8*x^3));
+check_toi((bessel_y(1,4*x)*bessel_y(3,4*x))/x^3,x);
+-((bessel_y(1,4*x)*bessel_y(3,4*x)+bessel_y(0,4*x)*bessel_y(2,4*x))/(6*x^2));
+check_toi((bessel_y(3,3*x)*hankel_1(4,3*x))/x^6,x);
+-((bessel_y(3,3*x)*hankel_1(4,3*x)+bessel_y(2,3*x)*hankel_1(3,3*x))/(12*x^5));
+check_toi((bessel_y(3,2*x)*hankel_2(3,2*x))/x^5,x);
+-((bessel_y(3,2*x)*hankel_2(3,2*x)+bessel_y(2,2*x)*hankel_2(2,2*x))/(10*x^4));
+check_toi((hankel_1(2,3*x)*hankel_1(3,3*x))/x^4,x);
+-((hankel_1(2,3*x)*hankel_1(3,3*x)+hankel_1(1,3*x)*hankel_1(2,3*x))/(8*x^3));
+check_toi((hankel_1(3,4*x)*hankel_2(3,4*x))/x^5,x);
+-((hankel_1(3,4*x)*hankel_2(3,4*x)+hankel_1(2,4*x)*hankel_2(2,4*x))/(10*x^4));
+check_toi(hankel_2(4,2*x)^2/x^7,x);
+-((hankel_2(4,2*x)^2+hankel_2(3,2*x)^2)/(14*x^6));
+
+/*DLMF 10.42.1 */
+check_toi(z*bessel_i(0,z),z);
+bessel_i(1,z)*z;
+check_toi(y^2*bessel_i(1,y),y);
+y^2*bessel_i(2,y);
+check_toi(bessel_i(3,z)/z^2,z);
+(bessel_i(2,z)/z^2);
+
+/* DLMF 10.43.2 */
+check_toi(x*bessel_i(1,x),x);
+(%pi*x*(struve_l(0,x)*bessel_i(1,x)-bessel_i(0,x)*struve_l(1,x)))/2;
+check_toi(x^2*bessel_i(2,x),x);
+(3*%pi*(struve_l(1,x)*bessel_i(2,x)-bessel_i(1,x)*struve_l(2,x))*x)/2;
+block([r],
+  assume(notequal(v,1/2)),
+  r:check_toi(x^v*bessel_i(v,x),x),
+  forget(notequal(v,1/2)),
+  r);
+sqrt(%pi)*2^(v-1)*(struve_l(v-1,x)*bessel_i(v,x)
+-bessel_i(v-1,x)*struve_l(v,x))*gamma(v+1/2)*x;
+ 
+/* DLMF 10.43.3 */
+/* i. %e^x*x^v*bessel_i(v,x) */
+check_toi(%e^x*bessel_i(0,x),x);
+exp(x)*x*(bessel_i(0,x)-bessel_i(1,x));
+check_toi(%e^x*x*bessel_i(1,x),x);
+((bessel_i(1,x)-bessel_i(2,x))*x^2*%e^x)/3;
+check_toi(%e^z*z^3*bessel_i(3,z),z);
+((bessel_i(3,z)-bessel_i(4,z))*z^4*%e^z)/7;
+
+/* ii.  %e^-x*x^v*bessel_i(v,x) */
+check_toi(%e^-x*bessel_i(0,x),x);
+exp(-x)*x*(bessel_i(0,x)+bessel_i(1,x));
+check_toi(%e^-x*x*bessel_i(1,x),x);
+((bessel_i(1,x)+bessel_i(2,x))*x^2*%e^-x)/3;
+block([r],
+  assume(notequal(n,-1/2)),
+  r:check_toi(%e^-x*x^n*bessel_i(n,x),x),
+  forget(notequal(n,-1/2)),
+  r);
+((bessel_i(n,x)+bessel_i(n+1,x))*x^(n+1)*%e^-x)/(2*n+1);
+ 
+/* iii.  %e^x*x^-v*bessel_i(v,x) */
+check_toi(%e^x*bessel_i(1,x)/x,x);
+-((bessel_i(1,x)-bessel_i(0,x))*%e^x);
+check_toi(%e^z*z^-3*bessel_i(3,z),z);
+-(((bessel_i(3,z)-bessel_i(2,z))*%e^z)/(5*z^2));
+
+/* iv.  %e^-x*x^-v*bessel_i(v,x) */
+check_toi(%e^-x*bessel_i(1,x)/x,x);
+-((bessel_i(1,x)+bessel_i(0,x))*%e^-x);
+check_toi(%e^-u*bessel_i(3,u)/u^3,u);
+-(((bessel_i(3,u)+bessel_i(2,u))*%e^-u)/(5*u^2));
+block([r],
+  assume(notequal(u,1/2)),
+  r:check_toi(%e^-x*x^-u*bessel_i(u,x),x),
+  forget(notequal(u,1/2)),
+  r);
+((bessel_i(u,x)+bessel_i(u-1,x))*x^(1-u)*%e^-x)/(1-2*u);
+
+/* A few bessel_k integrals */
+
+/*DLMF 10.42.1 */
+check_toi(z*bessel_k(0,z),z);
+-bessel_k(1,z)*z;
+check_toi(x^2*bessel_k(1,x),x);
+-x^2*bessel_k(2,x);
+
+/* DLMF 10.43.2 with v=1 */
+check_toi(x*bessel_k(1,x),x);
+(%pi*bessel_k(0,x)*struve_l(1,x)*x)/2+(%pi*struve_l(0,x)*bessel_k(1,x)*x)/2;
+
+/* DLMF 10.43.3.i with v=0 */
+check_toi(%e^x*bessel_k(0,x),x);
+%e^x*x*(bessel_k(0,x)+bessel_k(1,x));
+
+/* DLMF 10.43.3.i with v=1 */
+check_toi(%e^x*x*bessel_k(1,x),x);
+(1/3)*%e^x*x^2*(bessel_k(1,x)+bessel_k(2,x));
+
+/* DLMF 10.43.3.ii with v=0 */
+check_toi(%e^-x*bessel_k(0,x),x);
+%e^-x*x*(bessel_k(0,x)-bessel_k(1,x));
+
+/* DLMF 10.43.3.ii with v=1 */
+check_toi(%e^-x*x*bessel_k(1,x),x);
+(x^2/3)*%e^-x*(bessel_k(1,x)-bessel_k(2,x));
+
+/* DLMF 10.43.3.iii with v=1 */
+check_toi(%e^x*bessel_k(1,x)/x,x);
+-%e^x*(bessel_k(1,x)+bessel_k(0,x));
+
+/* DLMF 10.43.3.iv with v=1 */
+check_toi(%e^-x*bessel_k(1,x)/x,x);
+-%e^-x*(bessel_k(1,x)-bessel_k(0,x));
+
+/* DLMF 11.7: Struve functions - Indefinite integrals */
+
+/* DLMF 11.7.1 */
+check_toi(x^v*struve_h(v-1,x),x);
+struve_h(v,x)*x^v;
+check_toi(x^3*struve_h(2,x),x);
+struve_h(3,x)*x^3;
+check_toi(z^(n+1)*struve_h(n,z),z);
+struve_h(n+1,z)*z^(n+1);
+/* case v=1 */
+check_toi(x*struve_h(0,x),x);
+struve_h(1,x)*x;
+
+/* DLMF 11.7.2 */
+check_toi(x^-v*struve_h(v+1,x),x);
+x/(sqrt(%pi)*2^v*gamma(v+3/2))-struve_h(v,x)/x^v;
+check_toi(x^-2*struve_h(3,x),x);
+(2*x)/(15*%pi)-struve_h(2,x)/x^2;
+
+/* DLMF 11.7.3 */
+check_toi(x^v*struve_l(v-1,x),x);
+struve_l(v,x)*x^v;
+check_toi(x^5*struve_l(4,x),x);
+x^5*struve_l(5,x);
+
+/* case v=1 */
+check_toi(x*struve_l(0,x),x);
+struve_l(1,x)*x;
+
+/* DLMF 11.7.4 */
+check_toi(y^-u*struve_l(u+1,y),y);
+struve_l(u,y)/y^u-y/(sqrt(%pi)*2^u*gamma(u+3/2));
+check_toi(y^-2*struve_l(3,y),y);
+struve_l(2,y)/y^2-(2*y)/(15*%pi);
+
+/* DLMF 9.10 Airy functions */
+
+/* DLMF 9.10.8 */
+check_toi(x*airy_ai(x),x);
+airy_dai(x);
+check_toi(x*airy_bi(x),x);
+airy_dbi(x);
+
+/* DLMF 9.10.9 */
+check_toi(x^2*airy_ai(x),x);
+x*airy_dai(x)-airy_ai(x);
+check_toi(x^2*airy_bi(x),x);
+x*airy_dbi(x)-airy_bi(x);
+

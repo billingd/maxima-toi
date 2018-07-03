@@ -1,0 +1,130 @@
+/* test_toi.mac */
+
+
+(load("toi_testing.lisp"),0)$
+0;
+
+(load("contrib_ode"),0)$
+0;
+
+/* Evaluate integral using table_integrate
+   Check result using ode_check_tidy() from contrib_ode */
+(check_toi(integrand,x):=
+  block([integral,check],
+  integral:table_integrate(integrand,x),
+  if is(integral=false) then return(integral),
+  check:ode_check_tidy(diff(integral,x)-integrand),
+  if is(check=0) then
+    integral
+  else
+    [integral,check]),0)$
+0;
+
+/* x^(p+1)*bessel_j(p,x) DLMF 10.22.1 GR 5.52.1 */
+check_toi(x^(p+1)*bessel_j(p,x),x);
+bessel_j(p+1,x)*x^(p+1);
+check_toi(x^3*bessel_j(2,x),x);
+bessel_j(3,x)*x^3;
+
+/* x^(1-p)*bessel_j(p,x) DLMF 10.22.1 GR 5.52.2 */
+check_toi(x^(1-p)*bessel_j(p,x),x);
+-bessel_j(p-1,x)*x^(1-p);
+check_toi(x^(-2)*bessel_j(3,x),x);
+-bessel_j(2,x)/x^2;
+
+/* x*bessel_j(p,a*x)^2 GR 5.54.1 */
+check_toi(x*bessel_j(p,a*x)^2,x);
+(bessel_j(p,a*x)^2-bessel_j(p-1,a*x)*bessel_j(p+1,a*x))*x^2/2;
+check_toi(x*bessel_j(p+1,a*x)^2,x);
+(bessel_j(p+1,a*x)^2-bessel_j(p,a*x)*bessel_j(p+2,a*x))*x^2/2;
+check_toi(x*bessel_j(2*p+1,a*x)^2,x);
+(bessel_j(2*p+1,a*x)^2-bessel_j(2*p,a*x)*bessel_j(2*p+2,a*x))*x^2/2;
+check_toi(x*bessel_j(2*p+1,x)^2,x);
+(bessel_j(2*p+1,x)^2-bessel_j(2*p,x)*bessel_j(2*p+2,x))*x^2/2;
+/* pattern isn't sufficiently general,or perhaps it should be factored */
+check_toi(x*bessel_j(b+4,a*x+x)^2,x);
+true;
+
+/* x*bessel_j(0,x) GR 5.56.2 */
+check_toi(x*bessel_j(0,x),x);
+bessel_j(1,x)*x;
+
+/* bessel_j(p,x)*x^p DLMF 10.22.2 */
+block([r],
+  assume(notequal(p,-1/2)),
+  r:check_toi(bessel_j(p,x)*x^p,x),
+  forget(notequal(p,-1/2)),
+  r);
+sqrt(%pi)*2^(p-1)*(struve_h(p-1,x)*bessel_j(p,x)-bessel_j(p-1,x)*struve_h(p,x))*gamma(p+1/2)*x;
+check_toi(bessel_j(2,z)*z^2,z);
+3*%pi*(struve_h(1,z)*bessel_j(2,z)-bessel_j(1,z)*struve_h(2,z))*z/2;
+
+/* x*bessel_j(p,a*x)*bessel_j(p,b*x) DLMF 10.22.4 GR 5.54.1 */
+block([r],
+ /* assume(notequal(a^2,b^2) doesn't work */
+  assume(notequal(a,b),notequal(a,-b)),
+  r:check_toi(x*bessel_j(p,a*x)*bessel_j(p,b*x),x),
+  forget(notequal(a,b),notequal(a,-b)),
+  r);
+(a*bessel_j(p,b*x)*bessel_j(p+1,a*x)-b*bessel_j(p,a*x)*bessel_j(p+1,b*x))*x/(a^2-b^2);
+block([r],
+  assume(equal(c,1)),
+  r:check_toi(x*bessel_j(p,(c+1)*x)*bessel_j(p,c*x),x),
+  forget(equal(c,1)),
+  r);
+(c*bessel_j(p,(c+1)*x)*bessel_j(p+1,c*x)-(c+1)*bessel_j(p,c*x)*bessel_j(p+1,(c+1)*x))*x
+         /(c^2-(c+1)^2);
+
+/* bessel_j(u,a*x)*bessel_j(v,a*x) DLMF 10.22.6 GR 5.55" */
+block([r],
+ /* assume(notequal(u^2,u^2) doesn't work */
+  assume(notequal(u,v),notequal(u,-v)),
+  r:check_toi(bessel_j(u,a*x)*bessel_j(v,a*x)/x,x),
+  forget(notequal(u,v),notequal(u,-v)),
+  r);
+bessel_j(u,a*x)*bessel_j(v,a*x)/(v+u)
+ -a*(bessel_j(u+1,a*x)*bessel_j(v,a*x)-bessel_j(u,a*x)*bessel_j(v+1,a*x))*x/(u^2-v^2);
+check_toi(bessel_j(1,x)*bessel_j(2,x)/x,x);
+(bessel_j(2,x)^2-bessel_j(1,x)*bessel_j(3,x))*x/3+bessel_j(1,x)*bessel_j(2,x)/3;
+check_toi(bessel_j(1,x)*bessel_j(-1,x)/x,x); /* should not match */
+false;
+
+/* x^(u+v+1)*bessel_j(u,a*x)*bessel_j(v,a*x) DLMF 10.22.7 */
+block([r],
+  assume(notequal(u+v+1,0)),
+  r:check_toi(x^(u+v+1)*bessel_j(u,x)*bessel_j(v,x),x),
+  forget(notequal(u+v+1,0)),
+  r);
+(bessel_j(u+1,x)*bessel_j(v+1,x)
+  +bessel_j(u,x)*bessel_j(v,x))*x^(v+u+2)/(2*(v+u+1));
+
+/* u=0, v=1, a=1 */
+check_toi(bessel_j(0,x)*bessel_j(1,x)*x^2,x);
+((bessel_j(1,x)*bessel_j(2,x)+bessel_j(0,x)*bessel_j(1,x))*x^3)/4;
+
+/* u=0, v=-1, a=1; should not match u+v=-1 */
+table_integrate(bessel_j(0,x)*bessel_j(1,x),x);
+false;
+
+/* u=0, v=2, a=1 */
+table_integrate(bessel_j(0,x)*bessel_j(2,x)*x^3,x);
+((bessel_j(1,x)*bessel_j(3,x)+bessel_j(0,x)*bessel_j(2,x))*x^4)/6;
+
+/* x^(-u-v+1)*bessel_j(u,a*x)*bessel_j(v,a*x) DLMF 10.22.7 */
+block([r],
+  assume(notequal(u+v-1,0)),
+  r:check_toi(x^(-u-v+1)*bessel_j(u,a*x)*bessel_j(v,a*x),x),
+  forget(notequal(u+v-1,0)),
+  r);
+(bessel_j(u,a*x)*bessel_j(v,a*x)
+  +bessel_j(u-1,a*x)*bessel_j(v-1,a*x))*x^(-v-u+2)/(2*(-v-u+1));
+block([r],
+  assume(equal(u+v-1,0)),
+  r:check_toi(x^(-u-v+1)*bessel_j(u,a*x)*bessel_j(v,a*x),x),
+  forget(equal(u+v-1,0)),
+  r);
+false;
+check_toi(bessel_j(2,a*x)*bessel_j(3,a*x)/x^4,x);
+-((bessel_j(2,a*x)*bessel_j(3,a*x)+bessel_j(1,a*x)*bessel_j(2,a*x))/(8*x^3));
+
+
