@@ -1,4 +1,4 @@
-#TOI for maxima#
+# TOI for maxima
 
 This code extends the symbolic integration routines of the <a href="">Maxima</a> computer algebra package using table lookup.  It is at an early stage of development.
 
@@ -6,7 +6,7 @@ The routine is inspired by the TILU (Table of Integration Look Up) program by Te
 
 TILU has a sophisticated expression hash algorithm and is self-contained.  This code has a simpler hash routine which is adequate for the functions in the present lookup table, which is dominated by special functions.  It uses existing 
 
-#Quick start#
+# Quick start
 
 You need three files in the current working directory:
 
@@ -37,7 +37,7 @@ Use `table_integrate()` function.  The existing table of integrals has approxima
 (%o6)                       - log(jacobi_cn(u, m))
 </pre>
 
-##Method##
+## Method
 
 There are four components to the package:
 
@@ -46,7 +46,7 @@ There are four components to the package:
 3. a testsuite
 3. support code to assist maintainers prepare the table of integrals 
 
-###Table of integrals##
+### Table of integrals
 
 Each entry in the table of integrals is encoded as a lisp structure of the form 
 
@@ -117,7 +117,7 @@ A more complex example is given below.
   :M2-PATTERN ((MTIMES) ((MEXPT) ((%BESSEL_J) (U FREEVAR) ((MTIMES) (A FREEVAR) (X VARP))) 2) ((MEXPT) (X VARP) (2*U+1 SAMESAME U U 1))))
 </pre>
 
-###maxima routines###
+### maxima routines
 
 The table of integrals is stored as a hash table keyed by entry number.  A hash function - derived from the integrand - is used to map from the integrand into the table of integrals.
 
@@ -129,17 +129,17 @@ To integrate an expression E we:
 4. If E matches I->M2-PATTERN we confirm that the predicate I->CONSTRAINT is true
 5. If we found a match that satisfies the constraint, substitute the variable and parameters into the I->INTEGRAL2 and return
 
-###testsuite###
+### testsuite
 
 There is a maxima testsuite in the tests directory.
 
 It can be run with the commands `make check` at the top level or in tests directory.  The command `make check.log` runs the testsuite with display_all=true and saves the output to file check.log.
 
-###support code###
+### support code
 
 A number of support routines have been written to generate and check the table of integrals.  These are not ready for a wider audience.
 
-##Further work##
+## Further work
 
 1. Use maxima file search functions to load table of integrals 
 2. Tidy up and share support functions for table generation.
@@ -148,8 +148,7 @@ A number of support routines have been written to generate and check the table o
 5. Extend table of integrals.  I have a copy of the TILU tables and have translated some of it.  My entry numbers do not clash with TILU usage.
 6. Investigate performance of hash function.
 
-##References##
+## References
 
 1. Einwohner, T. H., Fateman, Richard J., Searching techniques for integral tables, ISSAC '95, Proceedings of the 1995 international symposium on symbolic and algebraic computation, ISBN:0-89791-699-9, <a href="doi:10.1145/220346.220364">doi:10.1145/220346.220364</a>,
 <a href="http://www.cs.berkeley.edu/~fateman/papers/integrate.ps">Postscript</a>, <a href="http://www.cs.berkeley.edu/~fateman/tilu/">code (2018-07-03)
-
