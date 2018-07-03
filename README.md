@@ -4,7 +4,7 @@ This code extends the symbolic integration routines of the <a href="">Maxima</a>
 
 The routine is inspired by the TILU (Table of Integration Look Up) program by Ted Einwohner, Richard Fateman and students at UC Berkeley.
 
-TILU has a sophisticated expression hash algorithm and is self-contained.  This code has a simpler hash routine which is adequate for the functions in the present lookup table, which is dominated by special functions.  It uses existing 
+TILU has a sophisticated expression hash algorithm and is self-contained.  This code has a simpler hash routine which is adequate for the functions in the present lookup table. 
 
 # Quick start
 
