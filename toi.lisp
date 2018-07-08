@@ -240,7 +240,7 @@
   "Read integrals from infile and load into table of integrals"
   (let ((ifile nil) (l nil) s)
     (with-open-file
-     (ifile infile
+     (ifile ($file_search infile)
 	    :direction :input)
      (loop for s = (read ifile nil nil)
 	   while s
