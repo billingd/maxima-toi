@@ -1,0 +1,5 @@
+/* Primitive TOI test setup */
+
+load("../toi.lisp")$
+load("../toi-support.lisp")$
+toi_read_table("../toi-integral-table.lisp")$
