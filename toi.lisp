@@ -48,9 +48,9 @@
               ; Can be generated from integrand in simple cases
 )
 
-(defmfun $table_integrate (e x)
+(defmfun $table_integrate (e x &optional (lbound nil) (ubound nil))
   "Integrate integrand e wrt x using table lookup"
-  (toi-lookup-integrand e x))
+  (toi-lookup-integrand e x lbound ubound))
 
 (defmfun $toi_read_table (file)
   "Read integrals from file and load into table of integrals"
@@ -61,19 +61,24 @@
  "The table of integrals. A hash table of toi-entry structures.  
   The hash key is the toi-entry index, a positive integer.")
 
-(defvar *integrand-hash-table* (make-hash-table :test #'equal)
- "Hash table of integrand expressions.  Key is expression hash.  
+;; *table-of-integrals* is indexed by a set of hash tables
+;; There is a separate hash table for each (lbound ubound) pair
+;;
+(defvar *table-of-integrand-hash-tables* (make-hash-table :test #'equal)
+ "Hash table of hash tables of integrand expressions.
+  Key is '(lbound ubound)
+  Each component hash table is keyed by expression hash.
   Value is a list of possible matches in *table-of-integrals*.")
 
 ;; Search for an integrand matching expression e
 ;; If found, substitute match returned by m2 into integral
 ;; m2 pattern matching requires VAR be set to integration variable
-(defun toi-lookup-integrand (e x)
+(defun toi-lookup-integrand (e x &optional (lbound nil) (ubound nil))
   "Integrate expression e wrt x using table lookup"
   (declare (special var))
   (setq var x)
-  ;; loop over candidate entries from table ofintegrals
-  (dolist (index (lookup-entry-list e x))
+  ;; loop over candidate entries from table of integrals
+  (dolist (index (lookup-entry-list e x lbound ubound))
     ;; loop over table entries that hash to e
     ;; If an entry matches e then return integral
     ;; otherwise return nil
@@ -81,10 +86,13 @@
 	   (integral (toi-match e table-entry)))
       (when integral (return integral)))))
 
-(defun lookup-entry-list (e x)
-  "Return list of integrands that hash to expression 
-   e with integration variable x"
-  (gethash (toi-hash-expression e x) *integrand-hash-table*))
+(defun lookup-entry-list (e x lbound ubound)
+  "Return list of integrands with lbound and ubound that hash
+   to expression e with integration variable x"
+  (let ((integrand-hash-table
+	 (gethash `(,lbound ,ubound) *table-of-integrand-hash-tables*)))
+    (when integrand-hash-table
+      (gethash (toi-hash-expression e x) integrand-hash-table))))
 
 ;; Given:
 ;;   e - integrand
@@ -125,6 +133,8 @@
      ((and constraint
 	   (not (apply (eval `(lambda ,dummy-args ,constraint)) actual-args)))
       nil)
+     ;; integral is an atom such as 2 or %pi
+     ((atom integral-form) integral-form)
      ;; Is integral-form a lisp function stored in value slot?
      ;; If so, evaluate with actual arguments
      ((equal (first integral-form) 'function)
@@ -180,7 +190,8 @@
 	  ((freeof x e) nil)
 	  (t (toi-normalize (cons (mop e) (mapcar #'toi-hash-2 (rest e))))))))
      (let ((h (toi-hash-2 e)))
-	   (cond
+       (cond
+	    ((atom h) h)
 	    ((equal (car h) 'mtimes) (rest h)) ; drop leading mtimes
 	    (t h)))))
 
@@ -246,24 +257,42 @@
 	   while s
 	   do
 	   (toi-add-entry s))))
-  (toi-sort-table))
+  (toi-sort-tables))
+
+(defun toi-sort-tables ()
+  "Sort entries in each integrand hash table"
+  (maphash
+    (lambda (k v) (toi-sort-table v))
+    *table-of-integrand-hash-tables*))
 
 ;; This ensures entries are tried in index order
-(defun toi-sort-table ()
-  "Sort entries in *integrand-hash-table*"
+(defun toi-sort-table (integrand-hash-table)
+  "Sort entries in integrand hash table.  Remove duplicates."
   (maphash
    (lambda (k v)
-     (setf (gethash k *integrand-hash-table*) (sort v #'<)))
-   *integrand-hash-table*))
+     (setf (gethash k integrand-hash-table)
+	   (remove-duplicates (sort v #'<))))
+   integrand-hash-table))
 
 (defun toi-add-entry (f)
-  "Add integral f to *table-of-integrals* and *integrand-hash-table*"
+  "Add integral f to *table-of-integrals* and integrand hash table"
   (let ((index (toi-entry-index f))
+	(lb (toi-entry-lbound f))
+	(ub (toi-entry-ubound f))
+	integrand-hash-table
         (hash
 	 (toi-hash-expression
 	  (simplifya (toi-entry-integrand2 f) nil)
 	  (toi-entry-var f))))
     ;; Add entry to table of integrals
     (setf (gethash index *table-of-integrals*) f)
-    ;; Add hashed integrand to lookup table
-    (push index (gethash hash *integrand-hash-table*))))
+    ;; Add entry to integrand hash table for (lb ub)
+    ;; Create table if it doesn't exist
+    (setq integrand-hash-table
+	  (gethash `(,lb ,ub) *table-of-integrand-hash-tables*))
+    (unless integrand-hash-table
+      ;; new hash table required for (lb ub)
+      (setq integrand-hash-table (make-hash-table :test #'equal))
+      (setf (gethash `(,lb ,ub) *table-of-integrand-hash-tables*)
+	    integrand-hash-table))
+    (push index (gethash hash integrand-hash-table))))
