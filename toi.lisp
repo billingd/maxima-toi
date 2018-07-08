@@ -52,6 +52,11 @@
   "Integrate integrand e wrt x using table lookup"
   (toi-lookup-integrand e x))
 
+(defmfun $toi_read_table (file)
+  "Read integrals from file and load into table of integrals"
+  (toi-read-add-table file)
+  'done)
+
 (defvar *table-of-integrals* (make-hash-table :test #'equal)
  "The table of integrals. A hash table of toi-entry structures.  
   The hash key is the toi-entry index, a positive integer.")
