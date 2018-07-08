@@ -1,7 +1,7 @@
 /* test_toi.mac */
 
 
-(load("toi_testing.lisp"),0)$
+(load("toi_testing.mac"),0)$
 0;
 
 (load("contrib_ode"),0)$

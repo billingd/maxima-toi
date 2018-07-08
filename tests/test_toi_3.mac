@@ -1,4 +1,4 @@
-(load("toi_testing.lisp"),0);
+(load("toi_testing.mac"),0);
 0;
 
 /* Some of the Jacobi elliptic functions are recursive,
