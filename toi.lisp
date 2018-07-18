@@ -277,8 +277,8 @@
 (defun toi-add-entry (f)
   "Add integral f to *table-of-integrals* and integrand hash table"
   (let ((index (toi-entry-index f))
-	(lb (toi-entry-lbound f))
-	(ub (toi-entry-ubound f))
+	(lb (resimplify (toi-entry-lbound f)))
+	(ub (resimplify (toi-entry-ubound f)))
 	integrand-hash-table
         (hash
 	 (toi-hash-expression
