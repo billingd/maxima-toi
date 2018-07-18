@@ -2066,4 +2066,162 @@
   :M2-PATTERN ((MTIMES) ((%EXPINTEGRAL_CI) ((MTIMES) ((COEFFTT) (A FREEVAR)) (X VARP))) ((%SIN) ((MTIMES) ((COEFFTT) (A_ EQUAL A)) (X VARP))))
 )
 
+#S(TOI-ENTRY
+  :INDEX 1
+  :INTEGRAND "x"
+  :COMMENT "trivial for testing"
+  :VAR X
+  :INTEGRAL "1/2"
+  :INTEGRAND2 X
+  :INTEGRAL2 ((RAT) 1 2)
+  :LBOUND 0
+  :UBOUND 1
+  :M2-PATTERN (X VARP)
+)
+
+#S(TOI-ENTRY
+  :INDEX 2
+  :INTEGRAND "x"
+  :COMMENT "trivial for testing"
+  :VAR X
+  :INTEGRAL "2"
+  :INTEGRAND2 X
+  :INTEGRAL2 2
+  :LBOUND 0
+  :UBOUND 2
+  :M2-PATTERN (X VARP)
+)
+
+#S(TOI-ENTRY
+  :INDEX 3
+  :INTEGRAND "x^2"
+  :COMMENT "trivial for testing"
+  :VAR X
+  :INTEGRAL "1/3"
+  :INTEGRAND2 ((MEXPT) X 2)
+  :INTEGRAL2 ((RAT) 1 3)
+  :LBOUND 0
+  :UBOUND 1
+  :M2-PATTERN ((MEXPT) (X VARP) 2)
+)
+
+#S(TOI-ENTRY
+  :INDEX 4
+  :INTEGRAND "x^2"
+  :COMMENT "trivial for testing"
+  :VAR X
+  :INTEGRAL "8/3"
+  :INTEGRAND2 ((MEXPT) X 2)
+  :INTEGRAL2 ((RAT) 8 3)
+  :LBOUND 0
+  :UBOUND 2
+  :M2-PATTERN ((MEXPT) (X VARP) 2)
+)
+
+#S(TOI-ENTRY
+  :INDEX 5
+  :INTEGRAND "sin(x)^2"
+  :COMMENT "trivial for testing"
+  :VAR X
+  :INTEGRAL "%pi/2"
+  :INTEGRAND2 ((MEXPT) ((%SIN) X) 2)
+  :INTEGRAL2 ((MTIMES) ((RAT) 1 2) $%PI)
+  :LBOUND 0
+  :UBOUND $%PI
+  :M2-PATTERN ((MEXPT) ((%SIN) (X VARP)) 2)
+)
+
+#S(TOI-ENTRY
+  :INDEX 6
+  :INTEGRAND "sin(x)^2"
+  :COMMENT "trivial for testing"
+  :VAR X
+  :INTEGRAL "%pi/4"
+  :INTEGRAND2 ((MEXPT) ((%SIN) X) 2)
+  :INTEGRAL2 ((MTIMES) ((RAT) 1 4) $%PI)
+  :LBOUND 0
+  :UBOUND ((MTIMES) ((RAT) 1 2) $%PI)
+  :M2-PATTERN ((MEXPT) ((%SIN) (X VARP)) 2)
+)
+
+#S(TOI-ENTRY
+  :INDEX 1300
+  :INTEGRAND "tan(x)/x"
+  :COMMENT "CRC 603"
+  :VAR X
+  :INTEGRAL "%pi/2"
+  :INTEGRAND2 ((MTIMES) ((MEXPT) X -1) ((%TAN) X))
+  :INTEGRAL2 ((MTIMES) ((RAT) 1 2) $%PI)
+  :LBOUND 0
+  :UBOUND $INF
+  :M2-PATTERN ((MTIMES) ((MEXPT) (X VARP) -1) ((%TAN) (X VARP)))
+)
+
+#S(TOI-ENTRY
+  :INDEX 1301
+  :INTEGRAND "tan(a*x)/x"
+  :COMMENT "CRC 604"
+  :VAR X
+  :PARAMETERS (A)
+  :INTEGRAL "%pi/2"
+  :INTEGRAND2 ((MTIMES) ((MEXPT) X -1) ((%TAN) ((MTIMES) A X)))
+  :INTEGRAL2 ((MTIMES) ((RAT) 1 2) $%PI)
+  :LBOUND 0
+  :UBOUND $INF
+  :CONSTRAINT (ASK> A)
+  :M2-PATTERN ((MTIMES) ((MEXPT) (X VARP) -1) ((%TAN) ((MTIMES) ((COEFFTT) (A FREEVAR)) (X VARP))))
+)
+
+#S(TOI-ENTRY
+  :INDEX 1302
+  :INTEGRAND "sin(x)^3/x^2"
+  :COMMENT "CRC 622"
+  :VAR X
+  :INTEGRAL "3*log(3)/4"
+  :INTEGRAND2 ((MTIMES) ((MEXPT) X -2) ((MEXPT) ((%SIN) X) 3))
+  :INTEGRAL2 ((MTIMES) ((RAT) 3 4) ((%LOG) 3))
+  :LBOUND 0
+  :UBOUND $INF
+  :M2-PATTERN ((MTIMES) ((MEXPT) (X VARP) -2) ((MEXPT) ((%SIN) (X VARP)) 3))
+)
+
+#S(TOI-ENTRY
+  :INDEX 1303
+  :INTEGRAND "airy_ai(x)^3"
+  :COMMENT "DLMF 9.11.16"
+  :VAR X
+  :INTEGRAL "gamma(1/3)^2/(4*%pi^2)"
+  :INTEGRAND2 ((MEXPT) ((%AIRY_AI) X) 3)
+  :INTEGRAL2 ((MTIMES) ((RAT) 1 4) ((MEXPT) $%PI -2) ((MEXPT) ((%GAMMA) ((RAT) 1 3)) 2))
+  :LBOUND $MINF
+  :UBOUND $INF
+  :M2-PATTERN ((MEXPT) ((%AIRY_AI) (X VARP)) 3)
+)
+
+#S(TOI-ENTRY
+  :INDEX 1304
+  :INTEGRAND "airy_ai(x)^2*airy_bi(x)"
+  :COMMENT "DLMF 9.11.17"
+  :VAR X
+  :INTEGRAL "gamma(1/3)^2/(4*sqrt(3)*%pi^2)"
+  :INTEGRAND2 ((MTIMES) ((MEXPT) ((%AIRY_AI) X) 2) ((%AIRY_BI) X))
+  :INTEGRAL2 ((MTIMES) ((RAT) 1 4) ((MEXPT) 3 ((RAT) -1 2)) ((MEXPT) $%PI -2) ((MEXPT) ((%GAMMA) ((RAT) 1 3)) 2))
+  :LBOUND $MINF
+  :UBOUND $INF
+  :M2-PATTERN ((MTIMES) ((MEXPT) ((%AIRY_AI) (X VARP)) 2) ((%AIRY_BI) (X VARP)))
+)
+
+#S(TOI-ENTRY
+  :INDEX 1305
+  :INTEGRAND "airy_ai(x)^4"
+  :COMMENT "DLMF 9.11.18"
+  :VAR X
+  :INTEGRAL "log(3)/(24*%pi^2)"
+  :INTEGRAND2 ((MEXPT) ((%AIRY_AI) X) 4)
+  :INTEGRAL2 ((MTIMES) ((RAT) 1 24) ((MEXPT) $%PI -2) ((%LOG) 3))
+  :LBOUND 0
+  :UBOUND $INF
+  :M2-PATTERN ((MEXPT) ((%AIRY_AI) (X VARP)) 4)
+)
+
 
