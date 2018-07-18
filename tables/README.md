@@ -13,24 +13,24 @@ Each entry in the table of integrals is defined by a structure toi-entry.
 
 <pre>
 (defstruct toi-entry
-  index       ; Number from source.  Used as index into lookup table
-  integrand   ; integrand as string in maxima syntax
+  :index       ; Number from source.  Used as index into lookup table
+  :integrand   ; integrand as string in maxima syntax
               ; not used if integrand2 defined
-  comment     ; Optional comment
-  var         ; variable of integration
-  parameters  ; free parameters in integrand
+  :comment     ; Optional comment
+  :var         ; variable of integration
+  :parameters  ; free parameters in integrand
               ; can be generated from integrand
-  source      ; Source of entry
-  integral    ; integral as string in maxima syntax
+  :source      ; Source of entry
+  :integral    ; integral as string in maxima syntax
               ; not used if integral2 defined
-  integrand2  ; expression to be integrated as lisp expression
+  :integrand2  ; expression to be integrated as lisp expression
               ; (can be generated from integrand)
-  integral2   ; integral as lisp expression
+  :integral2   ; integral as lisp expression
               ; (can be generated from integral)
-  lbound      ; lower limit of integration - nil if indefinite
-  ubound      ; upper limit of integration - nil if indefinite
-  constraint  ; predicate for constraint on parameters
-  m2-pattern  ; m2 pattern matching expression for integrand
+  :lbound      ; lower limit of integration - nil if indefinite
+  :ubound      ; upper limit of integration - nil if indefinite
+  :constraint  ; predicate for constraint on parameters
+  :m2-pattern  ; m2 pattern matching expression for integrand
               ; Can be generated from integrand in simple cases
 )
 </pre>
@@ -39,7 +39,7 @@ Each entry in the table of integrals is defined by a structure toi-entry.
 
 A simple preprocessor - written in maxima and lisp - takes a minimal table entry and tries to fill in missing slots.
 
-*  **index** is generated
+*  **index** is generated if required
 *  **integrand2** can be generated from **integrand**
 *  **integral2** can be generated from **integral**
 *  **parameters** can be extracted from **integral2**
@@ -52,9 +52,9 @@ The preprocessor functions are in file `toi-util.lisp`.
 A minimal entry is 
 <pre>
 #S(TOI-ENTRY
-   INTEGRAND "x*bessel_j(0,x)"
-   SOURCE ("GR 5.56.2")
-   INTEGRAL  "x*bessel_j(1,x)" )
+   :INTEGRAND "x*bessel_j(0,x)"
+   :SOURCE ("GR 5.56.2")
+   :INTEGRAL  "x*bessel_j(1,x)" )
 </pre>
 
 This is expanded to
@@ -67,7 +67,8 @@ This is expanded to
   :INTEGRAL "x*bessel_j(1,x)"
   :INTEGRAND2 ((MTIMES) ((%BESSEL_J) 0 X) X)
   :INTEGRAL2   ((MTIMES) ((%BESSEL_J) 1 X) X)
-  :M2-PATTERN ((MTIMES) ((%BESSEL_J) 0 (X VARP)) (X VARP)))
+  :M2-PATTERN ((MTIMES) ((%BESSEL_J) 0 (X VARP)) (X VARP))
+)
 </pre>
 
 ## More complicated entries
@@ -103,7 +104,8 @@ The following example has:
   :M2-PATTERN 
 ((MTIMES) ((%HANKEL_1) (U FREEVAR) ((MTIMES) ((COEFFTT) (A FREEVAR)) (X VARP)))
  ((%HANKEL_1) (V FREEVAR) ((MTIMES) ((COEFFTT) (A_ EQUAL A)) (X VARP)))
- ((MEXPT) (X VARP) (U+V+1 SAMESAME U V 1))))
+ ((MEXPT) (X VARP) (U+V+1 SAMESAME U V 1)))
+)
 </pre>
 
 ## Bessel functions
@@ -113,6 +115,6 @@ have a common form.  See [DLMF 10.22](https://dlmf.nist.gov/10.22).
 
 This structure is used to used to generate entries from templates in `bessel-integral-template.lisp` using code in `bessel_c-integral-table.lisp`.  There are:
 
-* four entries for integrals containing a single circular function
-* ten entries for integrals containing the product of two circular functions, and
+* four entries for integrals containing a single Bessel function
+* ten entries for integrals containing the product of two Bessel functions, and
 * additional special cases
