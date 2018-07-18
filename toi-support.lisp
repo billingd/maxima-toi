@@ -16,23 +16,25 @@
       ((mexpt) ,x ((mplus) 1 ((mtimes) -1 ,v)))
       ((mexpt) $%e ((mtimes) -1 ,x)))))
 
+(defun ask= (x &optional (y 0))
+  "True when x = y"
+  (equal ($askequal x y) '$YES)) 
+
+(defun ask# (x &optional (y 0))
+  "True when x # y"
+  (equal ($askequal x y) '$NO)) 
+
 (defun askequalsquarep (x y)
-  "True when $ASKEQUAL(x^2,y^2) = $YES"
-  (equal
-   ($askequal (resimplify `((mexpt) ,x 2)) (resimplify `((mexpt) ,y 2)))
-   '$YES))
+  "True when x^2=y^2"
+  (ask= (resimplify `((mexpt) ,x 2)) (resimplify `((mexpt) ,y 2))))
 
 (defun askzerosump (&rest l)
-  "True when $ASKEQUAL( sum of l, 0) = $YES"
-  (equal
-   ($askequal (resimplify (cons '(MPLUS) l)) 0)
-   '$YES))
+  "True when sum of args = 0"
+  (ask= (resimplify `((mplus) ,@l))))
 
 (defun integer>2p (n)
   "Predicate true when symbol n is an integer > 2"
-  (and
-   (equal ($askinteger n) '$YES)
-   (equal ($asksign (resimplify `((MPLUS) ,n 2))) '$POS)))
+  (askinteger> n 2))
 
 (defun askinteger> (n &optional (m 0))
   "Predicate true when n is an integer and n > m"
@@ -40,7 +42,10 @@
    (equal ($askinteger n) '$YES)
    (equal ($asksign (resimplify `((MMINUS) ,n ,m))) '$POS)))
 
-   
+(defun ask> (a &optional (b 0))
+  "Predicate true when a > b"
+  (equal ($asksign (resimplify `((mminus) ,a ,b))) '$POS))
+
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 ;;; predicates for m2 pattern matching. Names subject to change                ;;;
 ;;;                                                                            ;;;
