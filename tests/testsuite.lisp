@@ -10,5 +10,6 @@
          ((mlist) "test_toi.mac" 12)
 	 ((mlist) "test_toi_2.mac" )
 	 "test_toi_3.mac"
+	 "test_toi_4.mac"
 	)
 )
