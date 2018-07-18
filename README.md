@@ -167,10 +167,12 @@ A number of support routines have been written to generate and check the table o
 
 ## Further work
 
-1. ~~Use maxima file search functions to load table of integrals~~ 
-2. ~~Tidy up and share support functions for table generation.~~
+1. ~~Use maxima file search functions to load table of integrals~~ 2018-07-08
+2. ~~Tidy up and share support functions for table generation.~~ 2018-07-04
 3. Call routine from maxima integrate() function
-4. ~~Extend code to definite integrals.  TILU contains definite integrals over a small number of ranges including (0,1), (0,inf), (minf,0), (minf,inf), (0, pi), (0,2*pi).  It maintains a separate hash table for each range.~~
+4. ~~Extend code to definite integrals.  TILU contains definite integrals over a small number of ranges including (0,1), (0,inf), (minf,0), (minf,inf), (0, pi), (0,2*pi).  It maintains a separate hash table for each range.~~ 2018-07-08  Any limits of integration are allowed.  Hash tables are created as required.
+5. Allow definite integrals of form `integrate(f(u),u,constant,x)` and 
+`integrate(f(u),u,x,constant)`.
 5. Extend table of integrals.  I have a copy of the TILU tables and have translated some of it.  My entry numbers do not clash with TILU usage.
 6. Investigate performance of hash function.
 
