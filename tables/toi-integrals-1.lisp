@@ -40,7 +40,7 @@
    "sqrt(%pi)*2^(v-1)*gamma(v+1/2)*x
    *(struve_l(v-1,x)*bessel_i(v,x)
     -bessel_i(v-1,x)*struve_l(v,x))"
-   CONSTRAINT (equal ($askequal v '((rat) 1 2)) '$NO)
+   CONSTRAINT (ask# v 1//2)
    PARAMETERS (V)
    M2-PATTERN
       ((MTIMES)
@@ -59,7 +59,7 @@
    SOURCE ("DLMF 10.43.3.i")
    COMMENT "v # -1/2"
    INTEGRAL "%e^x*x^(v+1)*(bessel_i(v,x)-bessel_i(v+1,x))/(2*v+1)"
-   CONSTRAINT (equal ($askequal v '((rat) -1 2)) '$NO)
+   CONSTRAINT (ask# -1//2)
    PARAMETERS (V)
    M2-PATTERN
    ((MTIMES)
@@ -83,7 +83,7 @@
    SOURCE ("DLMF 10.43.3.ii")
    COMMENT "v # -1/2"
    INTEGRAL "%e^-x*x^(v+1)*(bessel_i(v,x)+bessel_i(v+1,x))/(2*v+1)"
-   CONSTRAINT (equal ($askequal v '((rat) -1 2)) '$NO)
+   CONSTRAINT (ask# v -1//2)
    PARAMETERS (V)
    M2-PATTERN
    ((MTIMES)
@@ -108,7 +108,7 @@
    SOURCE ("DLMF 10.43.3.iii")
    COMMENT "v # 1/2"
    INTEGRAL "%e^x*x^(1-v)*(bessel_i(v,x)-bessel_i(v-1,x))/(1-2*v)"
-   CONSTRAINT (equal ($askequal v '((rat) 1 2)) '$NO)
+   CONSTRAINT (ask# v 1//2)
    M2-PATTERN
    ((MTIMES)
     ((%BESSEL_I) (V FREEVAR) (X VARP))
@@ -127,7 +127,7 @@
    SOURCE ("DLMF 10.43.3.iv")
    COMMENT "v # 1/2"
    INTEGRAL "%e^-x*x^(1-v)*(bessel_i(v,x)+bessel_i(v-1,x))/(1-2*v)"
-   CONSTRAINT (equal ($askequal v '((rat) 1 2)) '$NO)
+   CONSTRAINT (ask# v 1//2)
    PARAMETERS (V)
    M2-PATTERN
    ((MTIMES)

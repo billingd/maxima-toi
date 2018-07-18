@@ -327,7 +327,7 @@
    COMMENT "a#b"
    INTEGRAL
    "-cos(a*x)*expintegral_ci(b*x)/a+(expintegral_ci((a+b)*x)+expintegral_ci((a-b)*x))/(2*a)"
-   CONSTRAINT (equal ($askequal a b) '$NO ) )
+   CONSTRAINT (ask# a b) )
 
 #S(TOI-ENTRY
    INTEGRAND "cos(a*x)*expintegral_si(b*x)"
@@ -335,7 +335,7 @@
    COMMENT "a#b"
    INTEGRAL
    "sin(a*x)*expintegral_si(b*x)/a+(expintegral_ci((a+b)*x)-expintegral_ci((a-b)*x))/(2*a)"
-   CONSTRAINT (equal ($askequal a b) '$NO ) )
+   CONSTRAINT (ask# a b) )
 
 #S(TOI-ENTRY
    INTEGRAND "sin(a*x)*expintegral_si(b*x)"
@@ -388,7 +388,7 @@
     +(cos(a*x)*expintegral_ci(b*x)/a)-(sin(b*x)*expintegral_si(a*x)/b)
     -((1/(2*a)+1/(2*b))*expintegral_ci((a+b)*x))
     -((1/(2*a)-1/(2*b))*expintegral_ci((a-b)*x))"
-   CONSTRAINT (equal ($askequal a b) '$NO ) )
+   CONSTRAINT (ask# a b) )
 
 ;; Other indefinite integrals from http://functions.wolfram.com
 

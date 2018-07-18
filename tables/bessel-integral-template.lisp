@@ -79,7 +79,8 @@
    PARAMETERS (P)
    INTEGRAL "sqrt(%pi)*2^(p-1)*(struve_h(p-1,x)*bessel_c(p,x)-bessel_c(p-1,x)*struve_h(p,x))*gamma(p+1/2)*x"
    COMMENT "p # -1/2"   
-   CONSTRAINT (equal ($askequal p '((rat) -1 2)) '$NO))
+   ;CONSTRAINT (equal ($askequal p '((rat) -1 2)) '$NO))
+   CONSTRAINT (ask# p -1//2))
 
 ; DLMF 10.22.2 with p=1
 #S(TOI-ENTRY
@@ -94,7 +95,7 @@
    COMMENT "u # -1/2"
    PARAMETERS (A U)
    INTEGRAL "((bessel_c(u+1,a*x)^2+bessel_c(u,a*x)^2)*x^(2*u+2))/(2*(2*u+1))"
-   CONSTRAINT (equal ($askequal u '((rat) -1 2)) '$NO)
+   CONSTRAINT (ask# u -1//2)
    M2-PATTERN
    ((MTIMES)
     ((MEXPT) ((%BESSEL_C) (U FREEVAR) ((MTIMES) (A FREEVAR) (X VARP))) 2)
@@ -107,7 +108,7 @@
    COMMENT "u # 1/2"
    PARAMETERS (A U)
    INTEGRAL "((bessel_c(u,a*x)^2+bessel_c(u-1,a*x)^2)*x^(2-2*u))/(2*(1-2*u))"
-   CONSTRAINT (equal ($askequal u '((rat) 1 2)) '$NO)
+   CONSTRAINT (ask# u 1//2)
    M2-PATTERN
    ((MTIMES) 
     ((MEXPT)

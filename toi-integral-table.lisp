@@ -196,7 +196,7 @@
   :INTEGRAL "sqrt(%pi)*2^(p-1)*(struve_h(p-1,x)*bessel_j(p,x)-bessel_j(p-1,x)*struve_h(p,x))*gamma(p+1/2)*x"
   :INTEGRAND2 ((MTIMES) ((%BESSEL_J) P X) ((MEXPT) X P))
   :INTEGRAL2 ((MTIMES) ((MEXPT) $%PI ((RAT) 1 2)) ((MEXPT) 2 ((MPLUS) -1 P)) ((MPLUS) ((MTIMES) ((%STRUVE_H) ((MPLUS) -1 P) X) ((%BESSEL_J) P X)) ((MTIMES) -1 ((%BESSEL_J) ((MPLUS) -1 P) X) ((%STRUVE_H) P X))) ((%GAMMA) ((MPLUS) ((RAT) 1 2) P)) X)
-  :CONSTRAINT (EQUAL ($ASKEQUAL P '((RAT) -1 2)) '$NO)
+  :CONSTRAINT (ASK# P |-1//2|)
   :M2-PATTERN ((MTIMES) ((%BESSEL_J) (P FREEVAR) (X VARP)) ((MEXPT) (X VARP) (P_ EQUAL P)))
 )
 
@@ -210,7 +210,7 @@
   :INTEGRAL "sqrt(%pi)*2^(p-1)*(struve_h(p-1,x)*bessel_y(p,x)-bessel_y(p-1,x)*struve_h(p,x))*gamma(p+1/2)*x"
   :INTEGRAND2 ((MTIMES) ((%BESSEL_Y) P X) ((MEXPT) X P))
   :INTEGRAL2 ((MTIMES) ((MEXPT) $%PI ((RAT) 1 2)) ((MEXPT) 2 ((MPLUS) -1 P)) ((MPLUS) ((MTIMES) ((%STRUVE_H) ((MPLUS) -1 P) X) ((%BESSEL_Y) P X)) ((MTIMES) -1 ((%BESSEL_Y) ((MPLUS) -1 P) X) ((%STRUVE_H) P X))) ((%GAMMA) ((MPLUS) ((RAT) 1 2) P)) X)
-  :CONSTRAINT (EQUAL ($ASKEQUAL P '((RAT) -1 2)) '$NO)
+  :CONSTRAINT (ASK# P |-1//2|)
   :M2-PATTERN ((MTIMES) ((%BESSEL_Y) (P FREEVAR) (X VARP)) ((MEXPT) (X VARP) (P_ EQUAL P)))
 )
 
@@ -224,7 +224,7 @@
   :INTEGRAL "sqrt(%pi)*2^(p-1)*(struve_h(p-1,x)*hankel_1(p,x)-hankel_1(p-1,x)*struve_h(p,x))*gamma(p+1/2)*x"
   :INTEGRAND2 ((MTIMES) ((%HANKEL_1) P X) ((MEXPT) X P))
   :INTEGRAL2 ((MTIMES) ((MEXPT) $%PI ((RAT) 1 2)) ((MEXPT) 2 ((MPLUS) -1 P)) ((MPLUS) ((MTIMES) ((%STRUVE_H) ((MPLUS) -1 P) X) ((%HANKEL_1) P X)) ((MTIMES) -1 ((%HANKEL_1) ((MPLUS) -1 P) X) ((%STRUVE_H) P X))) ((%GAMMA) ((MPLUS) ((RAT) 1 2) P)) X)
-  :CONSTRAINT (EQUAL ($ASKEQUAL P '((RAT) -1 2)) '$NO)
+  :CONSTRAINT (ASK# P |-1//2|)
   :M2-PATTERN ((MTIMES) ((%HANKEL_1) (P FREEVAR) (X VARP)) ((MEXPT) (X VARP) (P_ EQUAL P)))
 )
 
@@ -238,7 +238,7 @@
   :INTEGRAL "sqrt(%pi)*2^(p-1)*(struve_h(p-1,x)*hankel_2(p,x)-hankel_2(p-1,x)*struve_h(p,x))*gamma(p+1/2)*x"
   :INTEGRAND2 ((MTIMES) ((%HANKEL_2) P X) ((MEXPT) X P))
   :INTEGRAL2 ((MTIMES) ((MEXPT) $%PI ((RAT) 1 2)) ((MEXPT) 2 ((MPLUS) -1 P)) ((MPLUS) ((MTIMES) ((%STRUVE_H) ((MPLUS) -1 P) X) ((%HANKEL_2) P X)) ((MTIMES) -1 ((%HANKEL_2) ((MPLUS) -1 P) X) ((%STRUVE_H) P X))) ((%GAMMA) ((MPLUS) ((RAT) 1 2) P)) X)
-  :CONSTRAINT (EQUAL ($ASKEQUAL P '((RAT) -1 2)) '$NO)
+  :CONSTRAINT (ASK# P |-1//2|)
   :M2-PATTERN ((MTIMES) ((%HANKEL_2) (P FREEVAR) (X VARP)) ((MEXPT) (X VARP) (P_ EQUAL P)))
 )
 
@@ -296,7 +296,7 @@
   :INTEGRAL "((bessel_j(u+1,a*x)^2+bessel_j(u,a*x)^2)*x^(2*u+2))/(2*(2*u+1))"
   :INTEGRAND2 ((MTIMES) ((MEXPT) ((%BESSEL_J) U ((MTIMES) A X)) 2) ((MEXPT) X ((MPLUS) 1 ((MTIMES) 2 U))))
   :INTEGRAL2 ((MTIMES) ((RAT) 1 2) ((MEXPT) ((MPLUS) 1 ((MTIMES) 2 U)) -1) ((MPLUS) ((MEXPT) ((%BESSEL_J) U ((MTIMES) A X)) 2) ((MEXPT) ((%BESSEL_J) ((MPLUS) 1 U) ((MTIMES) A X)) 2)) ((MEXPT) X ((MPLUS) 2 ((MTIMES) 2 U))))
-  :CONSTRAINT (EQUAL ($ASKEQUAL U '((RAT) -1 2)) '$NO)
+  :CONSTRAINT (ASK# U |-1//2|)
   :M2-PATTERN ((MTIMES) ((MEXPT) ((%BESSEL_J) (U FREEVAR) ((MTIMES) (A FREEVAR) (X VARP))) 2) ((MEXPT) (X VARP) (2*U+1 SAMESAME U U 1)))
 )
 
@@ -310,7 +310,7 @@
   :INTEGRAL "((bessel_y(u+1,a*x)^2+bessel_y(u,a*x)^2)*x^(2*u+2))/(2*(2*u+1))"
   :INTEGRAND2 ((MTIMES) ((MEXPT) ((%BESSEL_Y) U ((MTIMES) A X)) 2) ((MEXPT) X ((MPLUS) 1 ((MTIMES) 2 U))))
   :INTEGRAL2 ((MTIMES) ((RAT) 1 2) ((MEXPT) ((MPLUS) 1 ((MTIMES) 2 U)) -1) ((MPLUS) ((MEXPT) ((%BESSEL_Y) U ((MTIMES) A X)) 2) ((MEXPT) ((%BESSEL_Y) ((MPLUS) 1 U) ((MTIMES) A X)) 2)) ((MEXPT) X ((MPLUS) 2 ((MTIMES) 2 U))))
-  :CONSTRAINT (EQUAL ($ASKEQUAL U '((RAT) -1 2)) '$NO)
+  :CONSTRAINT (ASK# U |-1//2|)
   :M2-PATTERN ((MTIMES) ((MEXPT) ((%BESSEL_Y) (U FREEVAR) ((MTIMES) (A FREEVAR) (X VARP))) 2) ((MEXPT) (X VARP) (2*U+1 SAMESAME U U 1)))
 )
 
@@ -324,7 +324,7 @@
   :INTEGRAL "((hankel_1(u+1,a*x)^2+hankel_1(u,a*x)^2)*x^(2*u+2))/(2*(2*u+1))"
   :INTEGRAND2 ((MTIMES) ((MEXPT) ((%HANKEL_1) U ((MTIMES) A X)) 2) ((MEXPT) X ((MPLUS) 1 ((MTIMES) 2 U))))
   :INTEGRAL2 ((MTIMES) ((RAT) 1 2) ((MEXPT) ((MPLUS) 1 ((MTIMES) 2 U)) -1) ((MPLUS) ((MEXPT) ((%HANKEL_1) U ((MTIMES) A X)) 2) ((MEXPT) ((%HANKEL_1) ((MPLUS) 1 U) ((MTIMES) A X)) 2)) ((MEXPT) X ((MPLUS) 2 ((MTIMES) 2 U))))
-  :CONSTRAINT (EQUAL ($ASKEQUAL U '((RAT) -1 2)) '$NO)
+  :CONSTRAINT (ASK# U |-1//2|)
   :M2-PATTERN ((MTIMES) ((MEXPT) ((%HANKEL_1) (U FREEVAR) ((MTIMES) (A FREEVAR) (X VARP))) 2) ((MEXPT) (X VARP) (2*U+1 SAMESAME U U 1)))
 )
 
@@ -338,7 +338,7 @@
   :INTEGRAL "((hankel_2(u+1,a*x)^2+hankel_2(u,a*x)^2)*x^(2*u+2))/(2*(2*u+1))"
   :INTEGRAND2 ((MTIMES) ((MEXPT) ((%HANKEL_2) U ((MTIMES) A X)) 2) ((MEXPT) X ((MPLUS) 1 ((MTIMES) 2 U))))
   :INTEGRAL2 ((MTIMES) ((RAT) 1 2) ((MEXPT) ((MPLUS) 1 ((MTIMES) 2 U)) -1) ((MPLUS) ((MEXPT) ((%HANKEL_2) U ((MTIMES) A X)) 2) ((MEXPT) ((%HANKEL_2) ((MPLUS) 1 U) ((MTIMES) A X)) 2)) ((MEXPT) X ((MPLUS) 2 ((MTIMES) 2 U))))
-  :CONSTRAINT (EQUAL ($ASKEQUAL U '((RAT) -1 2)) '$NO)
+  :CONSTRAINT (ASK# U |-1//2|)
   :M2-PATTERN ((MTIMES) ((MEXPT) ((%HANKEL_2) (U FREEVAR) ((MTIMES) (A FREEVAR) (X VARP))) 2) ((MEXPT) (X VARP) (2*U+1 SAMESAME U U 1)))
 )
 
@@ -352,7 +352,7 @@
   :INTEGRAL "((bessel_j(u,a*x)^2+bessel_j(u-1,a*x)^2)*x^(2-2*u))/(2*(1-2*u))"
   :INTEGRAND2 ((MTIMES) ((MEXPT) ((%BESSEL_J) U ((MTIMES) A X)) 2) ((MEXPT) X ((MPLUS) 1 ((MTIMES) -2 U))))
   :INTEGRAL2 ((MTIMES) ((RAT) 1 2) ((MEXPT) ((MPLUS) 1 ((MTIMES) -2 U)) -1) ((MPLUS) ((MEXPT) ((%BESSEL_J) ((MPLUS) -1 U) ((MTIMES) A X)) 2) ((MEXPT) ((%BESSEL_J) U ((MTIMES) A X)) 2)) ((MEXPT) X ((MPLUS) 2 ((MTIMES) -2 U))))
-  :CONSTRAINT (EQUAL ($ASKEQUAL U '((RAT) 1 2)) '$NO)
+  :CONSTRAINT (ASK# U |1//2|)
   :M2-PATTERN ((MTIMES) ((MEXPT) ((%BESSEL_J) (U FREEVAR) ((MTIMES) ((COEFFTT) (A FREEVAR)) (X VARP))) 2) ((MEXPT) (X VARP) (1-2*U SAMEDIFF U U -1)))
 )
 
@@ -366,7 +366,7 @@
   :INTEGRAL "((bessel_y(u,a*x)^2+bessel_y(u-1,a*x)^2)*x^(2-2*u))/(2*(1-2*u))"
   :INTEGRAND2 ((MTIMES) ((MEXPT) ((%BESSEL_Y) U ((MTIMES) A X)) 2) ((MEXPT) X ((MPLUS) 1 ((MTIMES) -2 U))))
   :INTEGRAL2 ((MTIMES) ((RAT) 1 2) ((MEXPT) ((MPLUS) 1 ((MTIMES) -2 U)) -1) ((MPLUS) ((MEXPT) ((%BESSEL_Y) ((MPLUS) -1 U) ((MTIMES) A X)) 2) ((MEXPT) ((%BESSEL_Y) U ((MTIMES) A X)) 2)) ((MEXPT) X ((MPLUS) 2 ((MTIMES) -2 U))))
-  :CONSTRAINT (EQUAL ($ASKEQUAL U '((RAT) 1 2)) '$NO)
+  :CONSTRAINT (ASK# U |1//2|)
   :M2-PATTERN ((MTIMES) ((MEXPT) ((%BESSEL_Y) (U FREEVAR) ((MTIMES) ((COEFFTT) (A FREEVAR)) (X VARP))) 2) ((MEXPT) (X VARP) (1-2*U SAMEDIFF U U -1)))
 )
 
@@ -380,7 +380,7 @@
   :INTEGRAL "((hankel_1(u,a*x)^2+hankel_1(u-1,a*x)^2)*x^(2-2*u))/(2*(1-2*u))"
   :INTEGRAND2 ((MTIMES) ((MEXPT) ((%HANKEL_1) U ((MTIMES) A X)) 2) ((MEXPT) X ((MPLUS) 1 ((MTIMES) -2 U))))
   :INTEGRAL2 ((MTIMES) ((RAT) 1 2) ((MEXPT) ((MPLUS) 1 ((MTIMES) -2 U)) -1) ((MPLUS) ((MEXPT) ((%HANKEL_1) ((MPLUS) -1 U) ((MTIMES) A X)) 2) ((MEXPT) ((%HANKEL_1) U ((MTIMES) A X)) 2)) ((MEXPT) X ((MPLUS) 2 ((MTIMES) -2 U))))
-  :CONSTRAINT (EQUAL ($ASKEQUAL U '((RAT) 1 2)) '$NO)
+  :CONSTRAINT (ASK# U |1//2|)
   :M2-PATTERN ((MTIMES) ((MEXPT) ((%HANKEL_1) (U FREEVAR) ((MTIMES) ((COEFFTT) (A FREEVAR)) (X VARP))) 2) ((MEXPT) (X VARP) (1-2*U SAMEDIFF U U -1)))
 )
 
@@ -394,7 +394,7 @@
   :INTEGRAL "((hankel_2(u,a*x)^2+hankel_2(u-1,a*x)^2)*x^(2-2*u))/(2*(1-2*u))"
   :INTEGRAND2 ((MTIMES) ((MEXPT) ((%HANKEL_2) U ((MTIMES) A X)) 2) ((MEXPT) X ((MPLUS) 1 ((MTIMES) -2 U))))
   :INTEGRAL2 ((MTIMES) ((RAT) 1 2) ((MEXPT) ((MPLUS) 1 ((MTIMES) -2 U)) -1) ((MPLUS) ((MEXPT) ((%HANKEL_2) ((MPLUS) -1 U) ((MTIMES) A X)) 2) ((MEXPT) ((%HANKEL_2) U ((MTIMES) A X)) 2)) ((MEXPT) X ((MPLUS) 2 ((MTIMES) -2 U))))
-  :CONSTRAINT (EQUAL ($ASKEQUAL U '((RAT) 1 2)) '$NO)
+  :CONSTRAINT (ASK# U |1//2|)
   :M2-PATTERN ((MTIMES) ((MEXPT) ((%HANKEL_2) (U FREEVAR) ((MTIMES) ((COEFFTT) (A FREEVAR)) (X VARP))) 2) ((MEXPT) (X VARP) (1-2*U SAMEDIFF U U -1)))
 )
 
@@ -1097,7 +1097,7 @@
     -bessel_i(v-1,x)*struve_l(v,x))"
   :INTEGRAND2 ((MTIMES) ((%BESSEL_I) V X) ((MEXPT) X V))
   :INTEGRAL2 ((MTIMES) ((MEXPT) $%PI ((RAT) 1 2)) ((MEXPT) 2 ((MPLUS) -1 V)) ((MPLUS) ((MTIMES) ((%STRUVE_L) ((MPLUS) -1 V) X) ((%BESSEL_I) V X)) ((MTIMES) -1 ((%BESSEL_I) ((MPLUS) -1 V) X) ((%STRUVE_L) V X))) ((%GAMMA) ((MPLUS) ((RAT) 1 2) V)) X)
-  :CONSTRAINT (EQUAL ($ASKEQUAL V '((RAT) 1 2)) '$NO)
+  :CONSTRAINT (ASK# V |1//2|)
   :M2-PATTERN ((MTIMES) ((%BESSEL_I) (V FREEVAR) (X VARP)) ((MEXPT) (X VARP) (V_ EQUAL V)))
 )
 
@@ -1122,7 +1122,7 @@
   :INTEGRAL "%e^x*x^(v+1)*(bessel_i(v,x)-bessel_i(v+1,x))/(2*v+1)"
   :INTEGRAND2 ((MTIMES) ((%BESSEL_I) V X) ((MEXPT) X V) ((MEXPT) $%E X))
   :INTEGRAL2 ((MTIMES) ((MEXPT) ((MPLUS) 1 ((MTIMES) 2 V)) -1) ((MPLUS) ((%BESSEL_I) V X) ((MTIMES) -1 ((%BESSEL_I) ((MPLUS) 1 V) X))) ((MEXPT) X ((MPLUS) 1 V)) ((MEXPT) $%E X))
-  :CONSTRAINT (EQUAL ($ASKEQUAL V '((RAT) -1 2)) '$NO)
+  :CONSTRAINT (ASK# |-1//2|)
   :M2-PATTERN ((MTIMES) ((%BESSEL_I) (V FREEVAR) (X VARP)) ((MEXPT) (X VARP) (V_ EQUAL V)) ((MEXPT) $%E (X VARP)))
 )
 
@@ -1158,7 +1158,7 @@
   :INTEGRAL "%e^-x*x^(v+1)*(bessel_i(v,x)+bessel_i(v+1,x))/(2*v+1)"
   :INTEGRAND2 ((MTIMES) ((%BESSEL_I) V X) ((MEXPT) X V) ((MEXPT) $%E ((MTIMES) -1 X)))
   :INTEGRAL2 ((MTIMES) ((MEXPT) ((MPLUS) 1 ((MTIMES) 2 V)) -1) ((MPLUS) ((%BESSEL_I) V X) ((%BESSEL_I) ((MPLUS) 1 V) X)) ((MEXPT) X ((MPLUS) 1 V)) ((MEXPT) $%E ((MTIMES) -1 X)))
-  :CONSTRAINT (EQUAL ($ASKEQUAL V '((RAT) -1 2)) '$NO)
+  :CONSTRAINT (ASK# V |-1//2|)
   :M2-PATTERN ((MTIMES) ((%BESSEL_I) (V FREEVAR) (X VARP)) ((MEXPT) (X VARP) (V_ EQUAL V)) ((MEXPT) $%E ((MTIMES) -1 (X VARP))))
 )
 
@@ -1194,7 +1194,7 @@
   :INTEGRAL "%e^x*x^(1-v)*(bessel_i(v,x)-bessel_i(v-1,x))/(1-2*v)"
   :INTEGRAND2 ((MTIMES) ((%BESSEL_I) V X) ((MEXPT) X ((MTIMES) -1 V)) ((MEXPT) $%E X))
   :INTEGRAL2 ((MTIMES) ((MEXPT) ((MPLUS) 1 ((MTIMES) -2 V)) -1) ((MPLUS) ((MTIMES) -1 ((%BESSEL_I) ((MPLUS) -1 V) X)) ((%BESSEL_I) V X)) ((MEXPT) X ((MPLUS) 1 ((MTIMES) -1 V))) ((MEXPT) $%E X))
-  :CONSTRAINT (EQUAL ($ASKEQUAL V '((RAT) 1 2)) '$NO)
+  :CONSTRAINT (ASK# V |1//2|)
   :M2-PATTERN ((MTIMES) ((%BESSEL_I) (V FREEVAR) (X VARP)) ((MEXPT) (X VARP) (-V SAMEDIFF V)) ((MEXPT) $%E (X VARP)))
 )
 
@@ -1219,7 +1219,7 @@
   :INTEGRAL "%e^-x*x^(1-v)*(bessel_i(v,x)+bessel_i(v-1,x))/(1-2*v)"
   :INTEGRAND2 ((MTIMES) ((%BESSEL_I) V X) ((MEXPT) X ((MTIMES) -1 V)) ((MEXPT) $%E ((MTIMES) -1 X)))
   :INTEGRAL2 ((MTIMES) ((MEXPT) ((MPLUS) 1 ((MTIMES) -2 V)) -1) ((MPLUS) ((%BESSEL_I) ((MPLUS) -1 V) X) ((%BESSEL_I) V X)) ((MEXPT) X ((MPLUS) 1 ((MTIMES) -1 V))) ((MEXPT) $%E ((MTIMES) -1 X)))
-  :CONSTRAINT (EQUAL ($ASKEQUAL V '((RAT) 1 2)) '$NO)
+  :CONSTRAINT (ASK# V |1//2|)
   :M2-PATTERN ((MTIMES) ((%BESSEL_I) (V FREEVAR) (X VARP)) ((MEXPT) (X VARP) (-V SAMEDIFF V)) ((MEXPT) $%E ((MTIMES) -1 (X VARP))))
 )
 
@@ -1893,7 +1893,7 @@
   :INTEGRAL "-cos(a*x)*expintegral_ci(b*x)/a+(expintegral_ci((a+b)*x)+expintegral_ci((a-b)*x))/(2*a)"
   :INTEGRAND2 ((MTIMES) ((%SIN) ((MTIMES) A X)) ((%EXPINTEGRAL_CI) ((MTIMES) B X)))
   :INTEGRAL2 ((MPLUS) ((MTIMES) -1 ((MEXPT) A -1) ((%COS) ((MTIMES) A X)) ((%EXPINTEGRAL_CI) ((MTIMES) B X))) ((MTIMES) ((RAT) 1 2) ((MEXPT) A -1) ((MPLUS) ((%EXPINTEGRAL_CI) ((MTIMES) ((MPLUS) A ((MTIMES) -1 B)) X)) ((%EXPINTEGRAL_CI) ((MTIMES) ((MPLUS) A B) X)))))
-  :CONSTRAINT (EQUAL ($ASKEQUAL A B) '$NO)
+  :CONSTRAINT (ASK# A B)
   :M2-PATTERN ((MTIMES) ((%SIN) ((MTIMES) ((COEFFTT) (A FREEVAR)) (X VARP))) ((%EXPINTEGRAL_CI) ((MTIMES) ((COEFFTT) (B FREEVAR)) (X VARP))))
 )
 
@@ -1907,7 +1907,7 @@
   :INTEGRAL "sin(a*x)*expintegral_si(b*x)/a+(expintegral_ci((a+b)*x)-expintegral_ci((a-b)*x))/(2*a)"
   :INTEGRAND2 ((MTIMES) ((%COS) ((MTIMES) A X)) ((%EXPINTEGRAL_SI) ((MTIMES) B X)))
   :INTEGRAL2 ((MPLUS) ((MTIMES) ((MEXPT) A -1) ((%SIN) ((MTIMES) A X)) ((%EXPINTEGRAL_SI) ((MTIMES) B X))) ((MTIMES) ((RAT) 1 2) ((MEXPT) A -1) ((MPLUS) ((MTIMES) -1 ((%EXPINTEGRAL_CI) ((MTIMES) ((MPLUS) A ((MTIMES) -1 B)) X))) ((%EXPINTEGRAL_CI) ((MTIMES) ((MPLUS) A B) X)))))
-  :CONSTRAINT (EQUAL ($ASKEQUAL A B) '$NO)
+  :CONSTRAINT (ASK# A B)
   :M2-PATTERN ((MTIMES) ((%COS) ((MTIMES) ((COEFFTT) (A FREEVAR)) (X VARP))) ((%EXPINTEGRAL_SI) ((MTIMES) ((COEFFTT) (B FREEVAR)) (X VARP))))
 )
 
@@ -1990,7 +1990,7 @@
     -((1/(2*a)-1/(2*b))*expintegral_ci((a-b)*x))"
   :INTEGRAND2 ((MTIMES) ((%EXPINTEGRAL_SI) ((MTIMES) A X)) ((%EXPINTEGRAL_CI) ((MTIMES) B X)))
   :INTEGRAL2 ((MPLUS) ((MTIMES) -1 ((MPLUS) ((MTIMES) ((RAT) 1 2) ((MEXPT) A -1)) ((MTIMES) ((RAT) -1 2) ((MEXPT) B -1))) ((%EXPINTEGRAL_CI) ((MTIMES) ((MPLUS) A ((MTIMES) -1 B)) X))) ((MTIMES) ((MEXPT) A -1) ((%COS) ((MTIMES) A X)) ((%EXPINTEGRAL_CI) ((MTIMES) B X))) ((MTIMES) X ((%EXPINTEGRAL_SI) ((MTIMES) A X)) ((%EXPINTEGRAL_CI) ((MTIMES) B X))) ((MTIMES) -1 ((MEXPT) B -1) ((%EXPINTEGRAL_SI) ((MTIMES) A X)) ((%SIN) ((MTIMES) B X))) ((MTIMES) -1 ((MPLUS) ((MTIMES) ((RAT) 1 2) ((MEXPT) A -1)) ((MTIMES) ((RAT) 1 2) ((MEXPT) B -1))) ((%EXPINTEGRAL_CI) ((MTIMES) ((MPLUS) A B) X))))
-  :CONSTRAINT (EQUAL ($ASKEQUAL A B) '$NO)
+  :CONSTRAINT (ASK# A B)
   :M2-PATTERN ((MTIMES) ((%EXPINTEGRAL_SI) ((MTIMES) ((COEFFTT) (A FREEVAR)) (X VARP))) ((%EXPINTEGRAL_CI) ((MTIMES) ((COEFFTT) (B FREEVAR)) (X VARP))))
 )
 
@@ -2145,7 +2145,7 @@
 )
 
 #S(TOI-ENTRY
-  :INDEX 1300
+  :INDEX 1400
   :INTEGRAND "tan(x)/x"
   :COMMENT "CRC 603"
   :VAR X
@@ -2158,7 +2158,7 @@
 )
 
 #S(TOI-ENTRY
-  :INDEX 1301
+  :INDEX 1401
   :INTEGRAND "tan(a*x)/x"
   :COMMENT "CRC 604"
   :VAR X
@@ -2173,7 +2173,7 @@
 )
 
 #S(TOI-ENTRY
-  :INDEX 1302
+  :INDEX 1402
   :INTEGRAND "sin(x)^3/x^2"
   :COMMENT "CRC 622"
   :VAR X
@@ -2186,7 +2186,7 @@
 )
 
 #S(TOI-ENTRY
-  :INDEX 1303
+  :INDEX 1403
   :INTEGRAND "airy_ai(x)^3"
   :COMMENT "DLMF 9.11.16"
   :VAR X
@@ -2199,7 +2199,7 @@
 )
 
 #S(TOI-ENTRY
-  :INDEX 1304
+  :INDEX 1404
   :INTEGRAND "airy_ai(x)^2*airy_bi(x)"
   :COMMENT "DLMF 9.11.17"
   :VAR X
@@ -2212,7 +2212,7 @@
 )
 
 #S(TOI-ENTRY
-  :INDEX 1305
+  :INDEX 1405
   :INTEGRAND "airy_ai(x)^4"
   :COMMENT "DLMF 9.11.18"
   :VAR X
