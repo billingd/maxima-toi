@@ -21,7 +21,7 @@ Run maxima and initialize with the commands
 <pre>
 load("toi.lisp");
 load("toi-support.lisp");
-toi_read_table("toi-integral-table.lisp")
+toi_read_table("toi-integral-table.lisp");
 </pre>
 
 Use `table_integrate()` function.  The existing table of integrals has approximately 150 entries - mainly products of Bessel functions and Jacobi elliptic functions.  See `toi-integral-table.lisp` or the testsuite.
