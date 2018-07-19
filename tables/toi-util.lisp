@@ -255,8 +255,8 @@
 ;; Process an integral table entry
 ;; - convert integrand from string if required
 (defun toi-process-entry (e)
-  (let
-    ()
+  (when (or (toi-entry-integrand e) (toi-entry-integrand2 e))
+    ;; return unchanged if neither integrand nor integrand2 defined
     (when (null (toi-entry-integrand2 e))
     ; convert integrand to integrand2
       (setf (toi-entry-integrand2 e)
@@ -275,10 +275,8 @@
        (setf (toi-entry-m2-pattern e)
 	     (expr-to-m2
 	      (toi-entry-integrand2 e)
-	      (toi-entry-var e))))
- 
-     e
-))
+	      (toi-entry-var e)))))
+  e)
 
 (defun toi-write-file (outfile table &optional (n nil))
   "Write a list of integrals to outfile"
