@@ -139,7 +139,7 @@ A more complex example is given below.
 ((MTIMES) ((RAT) 1 2) ((MEXPT) ((MPLUS) 1 ((MTIMES) 2 U)) -1)
  ((MPLUS) ((MEXPT) ((%BESSEL_J) U ((MTIMES) A X)) 2) ((MEXPT) ((%BESSEL_J) ((MPLUS) 1 U) ((MTIMES) A X)) 2))
  ((MEXPT) X ((MPLUS) 2 ((MTIMES) 2 U))))
-  :CONSTRAINT (EQUAL ($ASKEQUAL U '((RAT) -1 2)) '$NO)
+  :CONSTRAINT (ASK# U -1//2)
   :M2-PATTERN ((MTIMES) ((MEXPT) ((%BESSEL_J) (U FREEVAR) ((MTIMES) (A FREEVAR) (X VARP))) 2) ((MEXPT) (X VARP) (2*U+1 SAMESAME U U 1))))
 </pre>
 
