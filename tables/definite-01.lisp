@@ -47,3 +47,33 @@
    :LBOUND 0
    :UBOUND $inf
    :INTEGRAL "log(3)/(24*%pi^2)")
+
+;; DLMF 10.9 Integral Representations of Bessel functions
+
+;; DLMF 10.9(i) Integral Representations along the real line
+
+;; Bessel's integral
+#S(TOI-ENTRY
+   :INTEGRAND "cos(z*sin(theta))"
+   :SOURCE ("DLMF 10.9.1")
+   :VAR THETA
+   :PARAMETERS (Z) ; FIXME: Should be set by pre-processor
+   :LBOUND 0
+   :UBOUND $%pi
+   :INTEGRAL "%pi*bessel_j(0,z)")
+
+;; FIXME - generated M2-PATTERN broken
+#S(TOI-ENTRY
+   :INTEGRAND "cos(z*sin(theta)-n*theta)"
+   :COMMENT "n integer"
+   :SOURCE ("DLMF 10.9.2i")
+   :VAR THETA
+   :PARAMETERS (N Z) ; FIXME: Should be set by pre-processor
+   :LBOUND 0
+   :UBOUND $%pi
+   :CONSTRAINT ($askinteger n)
+   :INTEGRAL "%pi*bessel_j(n,z)")
+
+;; placeholder for DLMF 10.9.2ii
+#S(TOI-ENTRY
+   :COMMENT "placeholder for DLMF 10.9.2ii" )

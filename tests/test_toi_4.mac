@@ -58,5 +58,13 @@ false;
 table_integrate(airy_ai(x+1)^4,x,0,inf);
 false;
 
+/* Bessel's integral DLMF 10.9.1 */
+table_integrate(cos(z*sin(u)),u,0,%pi);
+%pi*bessel_j(0,z);
+table_integrate(cos(-3*sin(u)),u,0,%pi);
+%pi*bessel_j(0,3);
+table_integrate(cos((1-x)*sin(z)),z,0,%pi);
+%pi*bessel_j(0,1-x);
+
 (forget(ap>0),0);
 0;

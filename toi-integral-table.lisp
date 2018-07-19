@@ -2224,4 +2224,40 @@
   :M2-PATTERN ((MEXPT) ((%AIRY_AI) (X VARP)) 4)
 )
 
+#S(TOI-ENTRY
+  :INDEX 1406
+  :INTEGRAND "cos(z*sin(theta))"
+  :VAR THETA
+  :PARAMETERS (Z)
+  :SOURCE ("DLMF 10.9.1")
+  :INTEGRAL "%pi*bessel_j(0,z)"
+  :INTEGRAND2 ((%COS) ((MTIMES) ((%SIN) THETA) Z))
+  :INTEGRAL2 ((MTIMES) $%PI ((%BESSEL_J) 0 Z))
+  :LBOUND 0
+  :UBOUND $%PI
+  :M2-PATTERN ((%COS) ((MTIMES) ((%SIN) (THETA VARP)) ((COEFFTT) (Z FREEVAR))))
+)
+
+#S(TOI-ENTRY
+  :INDEX 1407
+  :INTEGRAND "cos(z*sin(theta)-n*theta)"
+  :COMMENT "n integer"
+  :VAR THETA
+  :PARAMETERS (N Z)
+  :SOURCE ("DLMF 10.9.2i")
+  :INTEGRAL "%pi*bessel_j(n,z)"
+  :INTEGRAND2 ((%COS) ((MPLUS) ((MTIMES) -1 N THETA) ((MTIMES) ((%SIN) THETA) Z)))
+  :INTEGRAL2 ((MTIMES) $%PI ((%BESSEL_J) N Z))
+  :LBOUND 0
+  :UBOUND $%PI
+  :CONSTRAINT ($ASKINTEGER N)
+  :M2-PATTERN ((%COS) ((MPLUS) ((MTIMES) -1 ((COEFFTT) (N FREEVAR)) (THETA VARP)) ((MTIMES) ((%SIN) (THETA VARP)) ((COEFFTT) (Z FREEVAR)))))
+)
+
+#S(TOI-ENTRY
+  :INDEX 1408
+  :COMMENT "placeholder for DLMF 10.9.2ii"
+  :VAR X
+)
+
 
