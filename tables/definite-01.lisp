@@ -4,14 +4,14 @@
 
 #S(TOI-ENTRY
    :INTEGRAND "tan(x)/x"
-   :COMMENT "CRC 603"
+   :SOURCE ("CRC 603")
    :LBOUND 0
    :UBOUND $inf
    :INTEGRAL "%pi/2")
 
 #S(TOI-ENTRY
    :INTEGRAND "tan(a*x)/x"
-   :COMMENT "CRC 604"
+   :SOURCE ("CRC 604")
    :PARAMETERS (A) ; FIXME: This isn't set by pre-processor
    :LBOUND 0
    :UBOUND $inf
@@ -20,7 +20,7 @@
 
 #S(TOI-ENTRY
    :INTEGRAND "sin(x)^3/x^2"
-   :COMMENT "CRC 622"
+   :SOURCE ("CRC 622")
    :LBOUND 0
    :UBOUND $inf
    :INTEGRAL "3*log(3)/4")
@@ -29,21 +29,21 @@
 
 #S(TOI-ENTRY
    :INTEGRAND "airy_ai(x)^3"
-   :COMMENT "DLMF 9.11.16"
+   :SOURCE ("DLMF 9.11.16")
    :LBOUND $minf
    :UBOUND $inf
    :INTEGRAL "gamma(1/3)^2/(4*%pi^2)")
 
 #S(TOI-ENTRY
    :INTEGRAND "airy_ai(x)^2*airy_bi(x)"
-   :COMMENT "DLMF 9.11.17"
+   :SOURCE ("DLMF 9.11.17")
    :LBOUND $minf
    :UBOUND $inf
    :INTEGRAL "gamma(1/3)^2/(4*sqrt(3)*%pi^2)")
 
 #S(TOI-ENTRY
    :INTEGRAND "airy_ai(x)^4"
-   :COMMENT "DLMF 9.11.18"
+   :SOURCE ("DLMF 9.11.18")
    :LBOUND 0
    :UBOUND $inf
    :INTEGRAL "log(3)/(24*%pi^2)")

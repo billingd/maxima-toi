@@ -2147,8 +2147,8 @@
 #S(TOI-ENTRY
   :INDEX 1400
   :INTEGRAND "tan(x)/x"
-  :COMMENT "CRC 603"
   :VAR X
+  :SOURCE ("CRC 603")
   :INTEGRAL "%pi/2"
   :INTEGRAND2 ((MTIMES) ((MEXPT) X -1) ((%TAN) X))
   :INTEGRAL2 ((MTIMES) ((RAT) 1 2) $%PI)
@@ -2160,9 +2160,9 @@
 #S(TOI-ENTRY
   :INDEX 1401
   :INTEGRAND "tan(a*x)/x"
-  :COMMENT "CRC 604"
   :VAR X
   :PARAMETERS (A)
+  :SOURCE ("CRC 604")
   :INTEGRAL "%pi/2"
   :INTEGRAND2 ((MTIMES) ((MEXPT) X -1) ((%TAN) ((MTIMES) A X)))
   :INTEGRAL2 ((MTIMES) ((RAT) 1 2) $%PI)
@@ -2175,8 +2175,8 @@
 #S(TOI-ENTRY
   :INDEX 1402
   :INTEGRAND "sin(x)^3/x^2"
-  :COMMENT "CRC 622"
   :VAR X
+  :SOURCE ("CRC 622")
   :INTEGRAL "3*log(3)/4"
   :INTEGRAND2 ((MTIMES) ((MEXPT) X -2) ((MEXPT) ((%SIN) X) 3))
   :INTEGRAL2 ((MTIMES) ((RAT) 3 4) ((%LOG) 3))
@@ -2188,8 +2188,8 @@
 #S(TOI-ENTRY
   :INDEX 1403
   :INTEGRAND "airy_ai(x)^3"
-  :COMMENT "DLMF 9.11.16"
   :VAR X
+  :SOURCE ("DLMF 9.11.16")
   :INTEGRAL "gamma(1/3)^2/(4*%pi^2)"
   :INTEGRAND2 ((MEXPT) ((%AIRY_AI) X) 3)
   :INTEGRAL2 ((MTIMES) ((RAT) 1 4) ((MEXPT) $%PI -2) ((MEXPT) ((%GAMMA) ((RAT) 1 3)) 2))
@@ -2201,8 +2201,8 @@
 #S(TOI-ENTRY
   :INDEX 1404
   :INTEGRAND "airy_ai(x)^2*airy_bi(x)"
-  :COMMENT "DLMF 9.11.17"
   :VAR X
+  :SOURCE ("DLMF 9.11.17")
   :INTEGRAL "gamma(1/3)^2/(4*sqrt(3)*%pi^2)"
   :INTEGRAND2 ((MTIMES) ((MEXPT) ((%AIRY_AI) X) 2) ((%AIRY_BI) X))
   :INTEGRAL2 ((MTIMES) ((RAT) 1 4) ((MEXPT) 3 ((RAT) -1 2)) ((MEXPT) $%PI -2) ((MEXPT) ((%GAMMA) ((RAT) 1 3)) 2))
@@ -2214,8 +2214,8 @@
 #S(TOI-ENTRY
   :INDEX 1405
   :INTEGRAND "airy_ai(x)^4"
-  :COMMENT "DLMF 9.11.18"
   :VAR X
+  :SOURCE ("DLMF 9.11.18")
   :INTEGRAL "log(3)/(24*%pi^2)"
   :INTEGRAND2 ((MEXPT) ((%AIRY_AI) X) 4)
   :INTEGRAL2 ((MTIMES) ((RAT) 1 24) ((MEXPT) $%PI -2) ((%LOG) 3))
