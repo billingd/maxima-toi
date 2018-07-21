@@ -12,7 +12,6 @@
 #S(TOI-ENTRY
    :INTEGRAND "tan(a*x)/x"
    :SOURCE ("CRC 604")
-   :PARAMETERS (A) ; FIXME: This isn't set by pre-processor
    :LBOUND 0
    :UBOUND $inf
    :CONSTRAINT (ask> a)
