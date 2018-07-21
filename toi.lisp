@@ -143,8 +143,15 @@
      ;; If so, evaluate with actual args
      ((equal (first integral-form) 'lambda)
       (apply (eval integral-form) actual-args))
-     ; integral-form is an expression, substitute s
-     (t (subliss s integral-form)))))
+     ;; integral-form is an expression, substitute s
+     ;; FIXME: This was wrong in quite a subtle way.  Need to review.
+     ;  - subliss calls maxima-substitute
+     ;; - if the integral-form expression contains %integrate
+     ;;   then irt can be evaluated before substitution
+     ;; - work around for now setting $simp nil
+     (t (resimplify
+	 (let (($simp nil))
+	   (subliss s integral-form)))))))
 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 ;;; Hash function for integrands                                     ;;;
