@@ -60,12 +60,7 @@
    :VAR X
    :PARAMETERS (A P)
    :INTEGRAL "(1/2)*x^2*(bessel_c(p,a*x)^2-bessel_c(p-1,a*x)*bessel_c(p+1,a*x))"
-   :M2-PATTERN
-   ((MTIMES)
-    (X VARP) 
-    ((MEXPT)
-     ((%BESSEL_C) (P FREEVAR) ((MTIMES) ((COEFFTT) (A FREEVAR)) (X VARP)))
-     2)))
+   )
 
 #S(TOI-ENTRY
    :INTEGRAND "x*bessel_c(0,x)"
@@ -130,14 +125,7 @@
    :PARAMETERS (A B P)
    :INTEGRAL "((a*bessel_d(p,b*x)*bessel_c(p+1,a*x)-b*bessel_c(p,a*x)*bessel_d(p+1,b*x))*x)/(a^2-b^2)"
    :CONSTRAINT (not (askequalsquarep a b))
-   :M2-PATTERN 
-   ((MTIMES) (X VARP)
-    ((%BESSEL_C)
-     (P FREEVAR)
-     ((MTIMES) ((COEFFTT) (A FREEVAR)) (X VARP)))
-    ((%BESSEL_D)
-     (P_ EQUAL P)
-     ((MTIMES) ((COEFFTT) (B FREEVAR)) (X VARP)))))
+   )
 
 ;; DLMF 10.22.5
 #S(TOI-ENTRY 
@@ -145,10 +133,7 @@
      :SOURCE ("DLMF 10.22.5")
      :PARAMETERS (A P)
      :INTEGRAL "(((-bessel_c(p-1,a*x)*bessel_d(p+1,a*x))-bessel_d(p-1,a*x)*bessel_c(p+1,a*x)+2*bessel_c(p,a*x)*bessel_d(p,a*x))*x^2)/4"
-     :M2-PATTERN 
-     ((MTIMES) (X VARP)
-      ((%BESSEL_C) (P FREEVAR) ((MTIMES) ((COEFFTT) (A FREEVAR)) (X VARP)))
-      ((%BESSEL_D) (P_ EQUAL P) ((MTIMES) ((COEFFTT) (A_ EQUAL A)) (X VARP)))))
+     )
 
 ;; DLMF 10.22.6
 #S(TOI-ENTRY 
@@ -158,15 +143,7 @@
      :PARAMETERS (A U V)
      :INTEGRAL "(bessel_c(u,a*x)*bessel_d(v,a*x))/(v+u)-(a*(bessel_c(u+1,a*x)*bessel_d(v,a*x)-bessel_c(u,a*x)*bessel_d(v+1,a*x))*x)/(u^2-v^2)"
      :CONSTRAINT (not (askequalsquarep u v))
-     :M2-PATTERN 
-     ((MTIMES)
-      ((MEXPT) (X VARP) -1)
-      ((%BESSEL_C)
-       (U FREEVAR)
-       ((MTIMES) ((COEFFTT) (A FREEVAR)) (X VARP)))
-      ((%BESSEL_D)
-       (V FREEVAR)
-       ((MTIMES) ((COEFFTT) (A_ EQUAL A)) (X VARP)))))
+     )
 
 ;; DLMF 10.22.7
 #S(TOI-ENTRY
