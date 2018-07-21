@@ -33,6 +33,12 @@ table_integrate(x^4,x,0,2);
 32/5;
 table_integrate(x^3,x,-1,-2);
 false;
+table_integrate(x^4,x,0,ap+2);
+(ap+2)^5/5;
+table_integrate(x^4,x,0,1+ap/3);
+(ap/3+1)^5/5;
+table_integrate(x^4,x,0,%pi+%e/3);
+(%pi+%e/3)^5/5;
 
 /* Non-trivial that maxima cannot solve */
 
