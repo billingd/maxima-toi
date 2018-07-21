@@ -270,7 +270,7 @@
        (setf (toi-entry-parameters e)
 	     (remove-duplicates
 	      (toi-sorted-parameter-list
-	       (toi-entry-integral2 e)
+	       (toi-entry-integrand2 e)
 	       (toi-entry-var e)))))
      (when (null (toi-entry-m2-pattern e)) ; m2 pattern
        (setf (toi-entry-m2-pattern e)
