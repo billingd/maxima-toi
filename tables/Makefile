@@ -29,17 +29,19 @@ toi-bessel-integrals.lisp: ../toi.lisp toi-util.lisp \
 	echo '(toi-write-file "$@" (toi-generate-bessel))';\
 	echo '($$quit)')  | $(MAXIMA)
 
+
+# Consistently number the entries
+# This is just to minimize changes to toi-integral-table.lisp
+definite-test.tmp: N=0
+toi-integral-table.lisp: N=1099
+definite-01.tmp: N=1399
+
 toi-integral-table.lisp: toi-integral-table.tmp ../toi.lisp toi-util.lisp
 	(echo "to_lisp();";\
 	echo '(load "../toi.lisp")';\
 	echo '(load "toi-util.lisp")';\
-	echo '(toi-filter-file "$<" "$@" 1099)';\
+	echo '(toi-filter-file "$<" "$@" $(N))';\
 	echo '($$quit)') | $(MAXIMA)
-
-# Consistently number the entries for definite integrals
-# This is just to minimize changes to toi-integral-table.lisp
-definite-test.tmp: N=0
-definite-01.tmp: N=1399
 
 definite-%.tmp: definite-%.lisp ../toi.lisp toi-util.lisp
 	(echo "to_lisp();";\
