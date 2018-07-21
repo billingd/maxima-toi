@@ -1475,7 +1475,7 @@
     +jacobi_cn(u,m)*jacobi_dn(u,m)*jacobi_sn(u,m)^(n-3))
     /(m*n-m)"
   :INTEGRAND2 ((MEXPT) ((%JACOBI_SN) U M) N)
-  :INTEGRAL2 (LAMBDA (U M N) (MEVAL `((MTIMES) ((MEXPT) ((MPLUS) ((MTIMES) -1 ,M) ((MTIMES) ,M ,N)) -1) ((MPLUS) ((MTIMES) (($JACOBI_CN) ,U ,M) (($JACOBI_DN) ,U ,M) ((MEXPT) (($JACOBI_SN) ,U ,M) ((MPLUS) -3 ,N))) ((MTIMES) ((MPLUS) 3 ((MTIMES) -1 ,N)) (($INTEGRATE) ((MEXPT) (($JACOBI_SN) ,U ,M) ((MPLUS) -4 ,N)) ,U)) ((MTIMES) ((MPLUS) -2 ((MTIMES) -2 ,M) ((MTIMES) ((MPLUS) 1 ,M) ,N)) (($INTEGRATE) ((MEXPT) (($JACOBI_SN) ,U ,M) ((MPLUS) -2 ,N)) ,U))))))
+  :INTEGRAL2 (LAMBDA (U M N LB UB) (MEVAL `((MTIMES) ((MEXPT) ((MPLUS) ((MTIMES) -1 ,M) ((MTIMES) ,M ,N)) -1) ((MPLUS) ((MTIMES) (($JACOBI_CN) ,U ,M) (($JACOBI_DN) ,U ,M) ((MEXPT) (($JACOBI_SN) ,U ,M) ((MPLUS) -3 ,N))) ((MTIMES) ((MPLUS) 3 ((MTIMES) -1 ,N)) (($INTEGRATE) ((MEXPT) (($JACOBI_SN) ,U ,M) ((MPLUS) -4 ,N)) ,U)) ((MTIMES) ((MPLUS) -2 ((MTIMES) -2 ,M) ((MTIMES) ((MPLUS) 1 ,M) ,N)) (($INTEGRATE) ((MEXPT) (($JACOBI_SN) ,U ,M) ((MPLUS) -2 ,N)) ,U))))))
   :CONSTRAINT (ASKINTEGER> N 2)
   :M2-PATTERN ((MEXPT) ((%JACOBI_SN) (U VARP) (M FREEVAR)) (N FREEVAR))
 )
@@ -1509,7 +1509,7 @@
     +jacobi_cn(u,m)^(n-3)*jacobi_dn(u,m)*jacobi_sn(u,m))
    /(m*n-m)"
   :INTEGRAND2 ((MEXPT) ((%JACOBI_CN) U M) N)
-  :INTEGRAL2 (LAMBDA (U M N) (MEVAL `((MTIMES) ((MEXPT) ((MPLUS) ((MTIMES) -1 ,M) ((MTIMES) ,M ,N)) -1) ((MPLUS) ((MTIMES) ((MEXPT) ((%JACOBI_CN) ,U ,M) ((MPLUS) -3 ,N)) ((%JACOBI_DN) ,U ,M) ((%JACOBI_SN) ,U ,M)) ((MTIMES) ((MPLUS) -3 ((MTIMES) 3 ,M) ((MTIMES) ((MPLUS) 1 ((MTIMES) -1 ,M)) ,N)) (($INTEGRATE) ((MEXPT) ((%JACOBI_CN) ,U ,M) ((MPLUS) -4 ,N)) ,U)) ((MTIMES) ((MPLUS) 2 ((MTIMES) -4 ,M) ((MTIMES) ((MPLUS) -1 ((MTIMES) 2 ,M)) ,N)) (($INTEGRATE) ((MEXPT) ((%JACOBI_CN) ,U ,M) ((MPLUS) -2 ,N)) ,U))))))
+  :INTEGRAL2 (LAMBDA (U M N LB UB) (MEVAL `((MTIMES) ((MEXPT) ((MPLUS) ((MTIMES) -1 ,M) ((MTIMES) ,M ,N)) -1) ((MPLUS) ((MTIMES) ((MEXPT) ((%JACOBI_CN) ,U ,M) ((MPLUS) -3 ,N)) ((%JACOBI_DN) ,U ,M) ((%JACOBI_SN) ,U ,M)) ((MTIMES) ((MPLUS) -3 ((MTIMES) 3 ,M) ((MTIMES) ((MPLUS) 1 ((MTIMES) -1 ,M)) ,N)) (($INTEGRATE) ((MEXPT) ((%JACOBI_CN) ,U ,M) ((MPLUS) -4 ,N)) ,U)) ((MTIMES) ((MPLUS) 2 ((MTIMES) -4 ,M) ((MTIMES) ((MPLUS) -1 ((MTIMES) 2 ,M)) ,N)) (($INTEGRATE) ((MEXPT) ((%JACOBI_CN) ,U ,M) ((MPLUS) -2 ,N)) ,U))))))
   :CONSTRAINT (ASKINTEGER> N 2)
   :M2-PATTERN ((MEXPT) ((%JACOBI_CN) (U VARP) (M FREEVAR)) (N FREEVAR))
 )
@@ -1542,7 +1542,7 @@
     +(m*n-n-3*m+3)*'integrate(jacobi_dn(u,m)^(n-4),u)
     +m*jacobi_cn(u,m)*jacobi_dn(u,m)^(n-3)*jacobi_sn(u,m))/(n-1)"
   :INTEGRAND2 ((MEXPT) ((%JACOBI_DN) U M) N)
-  :INTEGRAL2 (LAMBDA (U M N) (MEVAL `((MTIMES) ((MEXPT) ((MPLUS) -1 ,N) -1) ((MPLUS) ((MTIMES) ,M ((%JACOBI_CN) ,U ,M) ((MEXPT) ((%JACOBI_DN) ,U ,M) ((MPLUS) -3 ,N)) ((%JACOBI_SN) ,U ,M)) ((MTIMES) ((MPLUS) 3 ((MTIMES) -3 ,M) ((MTIMES) -1 ,N) ((MTIMES) ,M ,N)) (($INTEGRATE) ((MEXPT) ((%JACOBI_DN) ,U ,M) ((MPLUS) -4 ,N)) ,U)) ((MTIMES) ((MPLUS) -4 ((MTIMES) 2 ,M) ((MTIMES) 2 ,N) ((MTIMES) -1 ,M ,N)) (($INTEGRATE) ((MEXPT) ((%JACOBI_DN) ,U ,M) ((MPLUS) -2 ,N)) ,U))))))
+  :INTEGRAL2 (LAMBDA (U M N LB UB) (MEVAL `((MTIMES) ((MEXPT) ((MPLUS) -1 ,N) -1) ((MPLUS) ((MTIMES) ,M ((%JACOBI_CN) ,U ,M) ((MEXPT) ((%JACOBI_DN) ,U ,M) ((MPLUS) -3 ,N)) ((%JACOBI_SN) ,U ,M)) ((MTIMES) ((MPLUS) 3 ((MTIMES) -3 ,M) ((MTIMES) -1 ,N) ((MTIMES) ,M ,N)) (($INTEGRATE) ((MEXPT) ((%JACOBI_DN) ,U ,M) ((MPLUS) -4 ,N)) ,U)) ((MTIMES) ((MPLUS) -4 ((MTIMES) 2 ,M) ((MTIMES) 2 ,N) ((MTIMES) -1 ,M ,N)) (($INTEGRATE) ((MEXPT) ((%JACOBI_DN) ,U ,M) ((MPLUS) -2 ,N)) ,U))))))
   :CONSTRAINT (ASKINTEGER> N 2)
   :M2-PATTERN ((MEXPT) ((%JACOBI_DN) (U VARP) (M FREEVAR)) (N FREEVAR))
 )
@@ -2142,6 +2142,34 @@
   :LBOUND 0
   :UBOUND ((MTIMES) ((RAT) 1 2) $%PI)
   :M2-PATTERN ((MEXPT) ((%SIN) (X VARP)) 2)
+)
+
+#S(TOI-ENTRY
+  :INDEX 7
+  :INTEGRAND "x^3"
+  :COMMENT "trivial for testing"
+  :VAR X
+  :INTEGRAL "?ubound^4/4"
+  :INTEGRAND2 ((MEXPT) X 3)
+  :INTEGRAL2 ((MTIMES) ((RAT) 1 4) ((MEXPT) UBOUND 4))
+  :LBOUND 0
+  :UBOUND T
+  :CONSTRAINT (ASK> UBOUND)
+  :M2-PATTERN ((MEXPT) (X VARP) 3)
+)
+
+#S(TOI-ENTRY
+  :INDEX 8
+  :INTEGRAND "x^4"
+  :COMMENT "trivial for testing"
+  :VAR X
+  :INTEGRAL "?ubound^5/5"
+  :INTEGRAND2 ((MEXPT) X 4)
+  :INTEGRAL2 ((MTIMES) ((RAT) 1 5) ((MEXPT) UBOUND 5))
+  :LBOUND 0
+  :UBOUND T
+  :CONSTRAINT (ASK> UBOUND)
+  :M2-PATTERN ((MEXPT) (X VARP) 4)
 )
 
 #S(TOI-ENTRY

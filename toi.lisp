@@ -83,30 +83,51 @@
     ;; If an entry matches e then return integral
     ;; otherwise return nil
     (let* ((table-entry (gethash index *table-of-integrals*))
-	   (integral (toi-match e table-entry)))
+	   (integral (toi-match e table-entry lbound ubound)))
       (when integral (return integral)))))
 
 (defun lookup-entry-list (e x lbound ubound)
   "Return list of integrands with lbound and ubound that hash
    to expression e with integration variable x"
-  (let ((integrand-hash-table
-	 (gethash `(,lbound ,ubound) *table-of-integrand-hash-tables*)))
-    (when integrand-hash-table
-      (gethash (toi-hash-expression e x) integrand-hash-table))))
+  (let ((lb lbound) (ub ubound) limits)
+    ;; FIXME: $constantp is not quite correct
+    ;; Don't want to trigger for variables declared constant.
+    (when (and lb (not ($constantp lb))) (setq lb t))
+    (when (and ub (not ($constantp ub))) (setq ub t))
+    ;; A definite integral with a constant bound can match
+    ;; a table entry with a variable bound (indicated by t)
+    (setq limits
+	  (append
+	   `((,lb ,ub))
+	   (when ($constantp lbound) `((t ,ub)))
+	   (when ($constantp ubound) `((,lb t)))))
+    (loop for limit in limits
+	  with integrand-hash-table
+	  when (setq integrand-hash-table
+		     (gethash limit *table-of-integrand-hash-tables*))
+	  append (gethash (toi-hash-expression e x) integrand-hash-table)
+	  into entry-list
+	  finally (return entry-list))))
 
 ;; Given:
 ;;   e - integrand
 ;;   entry - entry from table of integrals
+;;   lb    - lower limit of integration
+;;   ub    - upper limit of integration
 ;; NOTE: integration variable is special variable var
 ;; Return
 ;; - integral if e matches entry and constraints are satisfied
 ;; - nil, otherwise
-(defun toi-match (e entry)
+(defun toi-match (e entry lb ub)
   "Attempt to match integrand with toi entry"
   (let*
       ((pattern (toi-entry-m2-pattern entry))
+       lbound ubound
        (s (m2 e pattern)))
-    (when s (toi-evaluate-integral entry s))))
+    (when s
+	(push `(lbound . ,lb) s)
+	(push `(ubound . ,ub) s)
+      (toi-evaluate-integral entry s))))
 
 ;; Given
 ;;   entry - entry from table of integrals
@@ -121,9 +142,8 @@
     ;; actual-args - Actual arguments of the integral function
     ;; constraint -   
     ((integral-form (toi-entry-integral2 entry))
-     (dummy-args (cons
-		  (toi-entry-var entry)
-		  (toi-entry-parameters entry)))	
+     (dummy-args
+      `(,(toi-entry-var entry) ,@(toi-entry-parameters entry) lbound ubound))
      (actual-args (mapcar #'(lambda (x) (subliss s x)) dummy-args))
      (constraint (toi-entry-constraint entry)))
     (cond

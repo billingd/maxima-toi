@@ -44,3 +44,18 @@
    :UBOUND ((MTIMES) ((RAT) 1 2) $%PI)
    :INTEGRAL "%pi/4")
 
+#S(TOI-ENTRY
+   :INTEGRAND "x^3"
+   :COMMENT "trivial for testing"
+   :LBOUND 0
+   :UBOUND T
+   :CONSTRAINT (ASK> UBOUND)
+   :INTEGRAL "?ubound^4/4")
+
+#S(TOI-ENTRY
+   :INTEGRAND "x^4"
+   :COMMENT "trivial for testing"
+   :LBOUND 0
+   :UBOUND T
+   :CONSTRAINT (ASK> UBOUND)
+   :INTEGRAL "?ubound^5/5")

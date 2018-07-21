@@ -1,7 +1,8 @@
 /* test_toi_4.mac */
 
-(assume(ap>0),0);
+(assume(ap>0,an<0),0);
 0;
+
 
 /* Trivial for testing */
 table_integrate(x,x,0,1);
@@ -19,6 +20,19 @@ table_integrate(sin(u)^2,u,0,%pi/2);
 table_integrate(sin(u)^2,u,0,2*%pi);
 false;
 
+/* Definite integrals with variable upper limits */ 
+table_integrate(x^3,x,0,1);
+1/4;
+table_integrate(x^3,x,0,ap);
+ap^4/4;
+table_integrate(x^3,x,0,an);
+false;
+table_integrate(x^3,x,1,2);
+false;
+table_integrate(x^4,x,0,2);
+32/5;
+table_integrate(x^3,x,-1,-2);
+false;
 
 /* Non-trivial that maxima cannot solve */
 
@@ -66,5 +80,5 @@ table_integrate(cos(-3*sin(u)),u,0,%pi);
 table_integrate(cos((1-x)*sin(z)),z,0,%pi);
 %pi*bessel_j(0,1-x);
 
-(forget(ap>0),0);
+(forget(ap>0,an<0),0);
 0;

@@ -39,7 +39,7 @@
    :PARAMETERS (M N)
    :CONSTRAINT (askinteger> n 2)
    :INTEGRAL2
-   (lambda (u m n)
+   (lambda (u m n lb ub)
      (meval
       `((MTIMES)
 	((MEXPT) ((MPLUS) ((MTIMES) -1 ,M) ((MTIMES) ,M ,N)) -1)
@@ -82,7 +82,7 @@
    :PARAMETERS (M N)
    :CONSTRAINT (askinteger> n 2)
    :INTEGRAL2
-   (lambda (u m n)
+   (lambda (u m n lb ub)
      (meval
       `((MTIMES)
 	((MEXPT) ((MPLUS) ((MTIMES) -1 ,M) ((MTIMES) ,M ,N)) -1)
@@ -126,7 +126,7 @@
    :PARAMETERS (M N)
    :CONSTRAINT (askinteger> n 2)
    :INTEGRAL2
-   (lambda (u m n)
+   (lambda (u m n lb ub)
      (meval
       `((MTIMES)
 	((MEXPT) ((MPLUS) -1 ,N) -1)

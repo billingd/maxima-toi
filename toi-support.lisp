@@ -8,7 +8,7 @@
 ;; in table of integrals
 ;;   DESCRIPTION "%e^-x*x^-v*bessel_i(v,x)"
 ;;   SOURCE ("DLMF 10.43.3.iv")
-(defun integral-bessel_i-DLMF-10.43.3.iv (x v)
+(defun integral-bessel_i-DLMF-10.43.3.iv (x v lbound ubound)
   (when (equal ($askequal v '((rat) 1 2)) '$NO)
     `((mtimes)
       ((mexpt) ((mplus) 1 ((mtimes) -2 ,v)) -1)
