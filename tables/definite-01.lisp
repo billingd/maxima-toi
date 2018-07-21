@@ -56,7 +56,6 @@
    :INTEGRAND "cos(z*sin(theta))"
    :SOURCE ("DLMF 10.9.1")
    :VAR THETA
-   :PARAMETERS (Z) ; FIXME: Should be set by pre-processor
    :LBOUND 0
    :UBOUND $%pi
    :INTEGRAL "%pi*bessel_j(0,z)")
@@ -67,7 +66,6 @@
    :COMMENT "n integer"
    :SOURCE ("DLMF 10.9.2i")
    :VAR THETA
-   :PARAMETERS (N Z) ; FIXME: Should be set by pre-processor
    :LBOUND 0
    :UBOUND $%pi
    :CONSTRAINT ($askinteger n)
