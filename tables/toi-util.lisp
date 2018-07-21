@@ -80,13 +80,14 @@
 (defun toi-print-entry (key value)
   (format t "Key: ~S Value: ~S~%" key value))
 
-;; Is the expression ex a parameter for table of integrals?
+;; Is the expression e a parameter for table of integrals?
 ;; x is the integration variable
-;;
-;; FIXME: Could (should?) be based on a list of parameters
 (defun toi-parameter-p (e x)
-  "Is the expression a parameter for table of integrals"
-  (and (atom e) (not (eq e x)) (not (maxima-constantp e))))
+  "Is the expression a parameter for table of integrals with var x"
+  (and (atom e)
+       (not (eq e x))
+       (not (member e '(lbound ubound)))
+       (not (maxima-constantp e))))
 
 (defun top-level-parameter-p (ex x)
   "True if top level subexpression is a parameter in table of integral"
