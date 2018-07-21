@@ -40,12 +40,7 @@
    "sqrt(%pi)*2^(v-1)*gamma(v+1/2)*x
    *(struve_l(v-1,x)*bessel_i(v,x)
     -bessel_i(v-1,x)*struve_l(v,x))"
-   :CONSTRAINT (ask# v 1//2)
-   :PARAMETERS (V)
-   :M2-PATTERN
-      ((MTIMES)
-       ((%BESSEL_I) (V FREEVAR) (X VARP))
-       ((MEXPT) (X VARP) (V_ EQUAL V))))
+   :CONSTRAINT (ask# v 1//2) )
 
 #S(TOI-ENTRY
    :INTEGRAND "x*bessel_i(1,x)"
@@ -59,13 +54,7 @@
    :SOURCE ("DLMF 10.43.3.i")
    :COMMENT "v # -1/2"
    :INTEGRAL "%e^x*x^(v+1)*(bessel_i(v,x)-bessel_i(v+1,x))/(2*v+1)"
-   :CONSTRAINT (ask# -1//2)
-   :PARAMETERS (V)
-   :M2-PATTERN
-   ((MTIMES)
-    ((%BESSEL_I) (V FREEVAR) (X VARP))
-    ((MEXPT) (X VARP) (V_ EQUAL V))
-    ((MEXPT) $%E (X VARP))))
+   :CONSTRAINT (ask# -1//2) )
 
 #S(TOI-ENTRY
    :INTEGRAND "%e^x*bessel_i(0,x)"
@@ -83,13 +72,7 @@
    :SOURCE ("DLMF 10.43.3.ii")
    :COMMENT "v # -1/2"
    :INTEGRAL "%e^-x*x^(v+1)*(bessel_i(v,x)+bessel_i(v+1,x))/(2*v+1)"
-   :CONSTRAINT (ask# v -1//2)
-   :PARAMETERS (V)
-   :M2-PATTERN
-   ((MTIMES)
-    ((%BESSEL_I) (V FREEVAR) (X VARP))
-    ((MEXPT) (X VARP) (V_ EQUAL V))
-    ((MEXPT) $%E ((MTIMES) -1 (X VARP)))))
+   :CONSTRAINT (ask# v -1//2))
 
 #S(TOI-ENTRY
    :INTEGRAND "%e^-x*bessel_i(0,x)"
