@@ -60,16 +60,18 @@
    :UBOUND $%pi
    :INTEGRAL "%pi*bessel_j(0,z)")
 
-;; FIXME - generated M2-PATTERN broken
+;; DLMF has "cos(z*sin(theta)-n*theta)"
+;; Generated M2-PATTERN fail for that
+;; but works after transformation n -> -n
 #S(TOI-ENTRY
-   :INTEGRAND "cos(z*sin(theta)-n*theta)"
+   :INTEGRAND "cos(z*sin(theta)+n*theta)"
    :COMMENT "n integer"
-   :SOURCE ("DLMF 10.9.2i")
+   :SOURCE ("DLMF 10.9.2i with n -> -n")
    :VAR THETA
    :LBOUND 0
    :UBOUND $%pi
    :CONSTRAINT ($askinteger n)
-   :INTEGRAL "%pi*bessel_j(n,z)")
+   :INTEGRAL "%pi*bessel_j(-n,z)")
 
 ;; placeholder for DLMF 10.9.2ii
 #S(TOI-ENTRY
