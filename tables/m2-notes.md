@@ -289,4 +289,4 @@ Notes:
 
 3. Avgoustis, Ioannis Dimitrios. 1977. [“Definite Integration Using the Generalized Hypergeometric Functions”](http://hdl.handle.net/1721.1/16269), MSc thesis, EE&CS, MIT.
 
-4. Avgoustis, Ioannis Dimitrios, 1977. [Symbolic Laplace Transforms of Special Functions](http://udspace.udel.edu/handle/19716/1398), Proceedings of the 1977 MACSYMA Users' Conference, pp 21-41.
+4. Avgoustis, Ioannis Dimitrios, 1977. [Symbolic Laplace Transforms of Special Functions](http://udspace.udel.edu/handle/19716/1398), [Proceedings of the 1977 MACSYMA Users' Conference](http://udspace.udel.edu/handle/19716/1398), pp 21-41.
