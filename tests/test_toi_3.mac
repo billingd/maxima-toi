@@ -14,19 +14,6 @@ block([simp:false],tellsimpafter('integrate(q,x),table_integrate(q,x))),
 0);
 0;
 
-/* Evaluate integral using table_integrate
-   Check result using ode_check_tidy() from contrib_ode */
-(check_toi(integrand,x):=
-  block([integral,check],
-  integral:table_integrate(integrand,x),
-  if is(integral=false) then return(integral),
-  check:ode_check_tidy(diff(integral,x)-integrand),
-  if is(check=0) then
-    integral
-  else
-    [integral,check]),0)$
-0;
-
 /* Check jacobi integrals. Can't reliably simplify to zero
    Just check that diff(integral,u)-integrand is small at a random point
    This take a few seconds extra */
@@ -227,11 +214,7 @@ check_toi(cos(2*y)*expintegral_ci(3*y),y);
 (sin(2*y)*expintegral_ci(3*y))/2-(expintegral_si(5*y)-expintegral_si(y))/4;
 
 /* G&R 5.31.2 */
-block([r],
-  assume(notequal(a,b)),
-  r:check_toi(sin(a*x)*expintegral_ci(b*x),x),
-  forget(notequal(a,b)),
-  r);
+check_toi(sin(a*x)*expintegral_ci(b*x),x,notequal(a,b));
 -cos(a*x)*expintegral_ci(b*x)/a+(expintegral_ci((a+b)*x)+expintegral_ci((a-b)*x))/(2*a);
 
 /* G&R 5.32.1 */
@@ -265,11 +248,7 @@ check_toi(expintegral_si(a*x)^2,x);
  +a*x*expintegral_si(a*x)^2-expintegral_si(2*a*x))/a;
 
 /* G&R 5.33.3 */
-block([r],
-  assume(notequal(a,b)),
-  r:check_toi(expintegral_si(a*x)*expintegral_ci(b*x),x),
-  forget(notequal(a,b)),
-  r);
+check_toi(expintegral_si(a*x)*expintegral_ci(b*x),x,assume(notequal(a,b)));
 x*expintegral_si(a*x)*expintegral_ci(b*x)
  +(cos(a*x)*expintegral_ci(b*x)/a)-(sin(b*x)*expintegral_si(a*x)/b)
  -((1/(2*a)+1/(2*b))*expintegral_ci((a+b)*x))
