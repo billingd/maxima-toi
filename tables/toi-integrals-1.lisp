@@ -54,7 +54,7 @@
    :SOURCE ("DLMF 10.43.3.i")
    :COMMENT "v # -1/2"
    :INTEGRAL "%e^x*x^(v+1)*(bessel_i(v,x)-bessel_i(v+1,x))/(2*v+1)"
-   :CONSTRAINT (ask# -1//2) )
+   :CONSTRAINT (ask# v -1//2) )
 
 #S(TOI-ENTRY
    :INTEGRAND "%e^x*bessel_i(0,x)"

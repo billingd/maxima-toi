@@ -261,6 +261,8 @@ check_toi(%e^x*x*bessel_i(1,x),x);
 ((bessel_i(1,x)-bessel_i(2,x))*x^2*%e^x)/3;
 check_toi(%e^z*z^3*bessel_i(3,z),z);
 ((bessel_i(3,z)-bessel_i(4,z))*z^4*%e^z)/7;
+check_toi((bessel_i(-1/2,x)*%e^x)/sqrt(x),x);
+false;
 
 /* ii.  %e^-x*x^v*bessel_i(v,x) */
 check_toi(%e^-x*bessel_i(0,x),x);

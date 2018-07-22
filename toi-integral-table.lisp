@@ -1122,7 +1122,7 @@
   :INTEGRAL "%e^x*x^(v+1)*(bessel_i(v,x)-bessel_i(v+1,x))/(2*v+1)"
   :INTEGRAND2 ((MTIMES) ((%BESSEL_I) V X) ((MEXPT) X V) ((MEXPT) $%E X))
   :INTEGRAL2 ((MTIMES) ((MEXPT) ((MPLUS) 1 ((MTIMES) 2 V)) -1) ((MPLUS) ((%BESSEL_I) V X) ((MTIMES) -1 ((%BESSEL_I) ((MPLUS) 1 V) X))) ((MEXPT) X ((MPLUS) 1 V)) ((MEXPT) $%E X))
-  :CONSTRAINT (ASK# |-1//2|)
+  :CONSTRAINT (ASK# V |-1//2|)
   :M2-PATTERN ((MTIMES) ((%BESSEL_I) (V FREEVAR) (X VARP)) ((MEXPT) (X VARP) (V_ EQUAL V)) ((MEXPT) $%E (X VARP)))
 )
 
