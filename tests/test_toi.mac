@@ -8,16 +8,19 @@
 0;
 
 /* Evaluate integral using table_integrate
-   Check result using ode_check_tidy() from contrib_ode */
-(check_toi(integrand,x):=
+   Check result using ode_check_tidy() from contrib_ode
+   assumptions is a list of assumptions for this test */
+(check_toi(integrand,x,[assumptions]):=
   block([integral,check],
+  print("in:  ",apply('assume,assumptions)),
   integral:table_integrate(integrand,x),
-  if is(integral=false) then return(integral),
-  check:ode_check_tidy(diff(integral,x)-integrand),
-  if is(check=0) then
-    integral
-  else
-    [integral,check]),0)$
+  if is(integral#false) then
+    block(
+      check:ode_check_tidy(diff(integral,x)-integrand),
+      if is(check#0) then integral:[integral,check]),
+  print("out: ",apply('forget,assumptions)),
+  integral),
+  0)$
 0;
 
 /* x^(p+1)*bessel_j(p,x) DLMF 10.22.1 GR 5.52.1 */
@@ -50,38 +53,23 @@ check_toi(x*bessel_j(0,x),x);
 bessel_j(1,x)*x;
 
 /* bessel_j(p,x)*x^p DLMF 10.22.2 */
-block([r],
-  assume(notequal(p,-1/2)),
-  r:check_toi(bessel_j(p,x)*x^p,x),
-  forget(notequal(p,-1/2)),
-  r);
+check_toi(bessel_j(p,x)*x^p,x,notequal(p,-1/2));
 sqrt(%pi)*2^(p-1)*(struve_h(p-1,x)*bessel_j(p,x)-bessel_j(p-1,x)*struve_h(p,x))*gamma(p+1/2)*x;
 check_toi(bessel_j(2,z)*z^2,z);
 3*%pi*(struve_h(1,z)*bessel_j(2,z)-bessel_j(1,z)*struve_h(2,z))*z/2;
 
 /* x*bessel_j(p,a*x)*bessel_j(p,b*x) DLMF 10.22.4 GR 5.54.1 */
-block([r],
- /* assume(notequal(a^2,b^2) doesn't work */
-  assume(notequal(a,b),notequal(a,-b)),
-  r:check_toi(x*bessel_j(p,a*x)*bessel_j(p,b*x),x),
-  forget(notequal(a,b),notequal(a,-b)),
-  r);
+check_toi(x*bessel_j(p,a*x)*bessel_j(p,b*x),x,
+    notequal(a,b),notequal(a,-b));
 (a*bessel_j(p,b*x)*bessel_j(p+1,a*x)-b*bessel_j(p,a*x)*bessel_j(p+1,b*x))*x/(a^2-b^2);
-block([r],
-  assume(equal(c,1)),
-  r:check_toi(x*bessel_j(p,(c+1)*x)*bessel_j(p,c*x),x),
-  forget(equal(c,1)),
-  r);
+check_toi(x*bessel_j(p,(c+1)*x)*bessel_j(p,c*x),x,equal(c,1));
 (c*bessel_j(p,(c+1)*x)*bessel_j(p+1,c*x)-(c+1)*bessel_j(p,c*x)*bessel_j(p+1,(c+1)*x))*x
          /(c^2-(c+1)^2);
 
 /* bessel_j(u,a*x)*bessel_j(v,a*x) DLMF 10.22.6 GR 5.55" */
-block([r],
- /* assume(notequal(u^2,u^2) doesn't work */
-  assume(notequal(u,v),notequal(u,-v)),
-  r:check_toi(bessel_j(u,a*x)*bessel_j(v,a*x)/x,x),
-  forget(notequal(u,v),notequal(u,-v)),
-  r);
+/* assume(notequal(u^2,u^2) doesn't work */
+check_toi(bessel_j(u,a*x)*bessel_j(v,a*x)/x,x,
+  notequal(u,v),notequal(u,-v));
 bessel_j(u,a*x)*bessel_j(v,a*x)/(v+u)
  -a*(bessel_j(u+1,a*x)*bessel_j(v,a*x)-bessel_j(u,a*x)*bessel_j(v+1,a*x))*x/(u^2-v^2);
 check_toi(bessel_j(1,x)*bessel_j(2,x)/x,x);
@@ -90,11 +78,7 @@ check_toi(bessel_j(1,x)*bessel_j(-1,x)/x,x); /* should not match */
 false;
 
 /* x^(u+v+1)*bessel_j(u,a*x)*bessel_j(v,a*x) DLMF 10.22.7 */
-block([r],
-  assume(notequal(u+v+1,0)),
-  r:check_toi(x^(u+v+1)*bessel_j(u,x)*bessel_j(v,x),x),
-  forget(notequal(u+v+1,0)),
-  r);
+check_toi(x^(u+v+1)*bessel_j(u,x)*bessel_j(v,x),x,notequal(u+v+1,0));
 (bessel_j(u+1,x)*bessel_j(v+1,x)
   +bessel_j(u,x)*bessel_j(v,x))*x^(v+u+2)/(2*(v+u+1));
 
@@ -111,20 +95,11 @@ table_integrate(bessel_j(0,x)*bessel_j(2,x)*x^3,x);
 ((bessel_j(1,x)*bessel_j(3,x)+bessel_j(0,x)*bessel_j(2,x))*x^4)/6;
 
 /* x^(-u-v+1)*bessel_j(u,a*x)*bessel_j(v,a*x) DLMF 10.22.7 */
-block([r],
-  assume(notequal(u+v-1,0)),
-  r:check_toi(x^(-u-v+1)*bessel_j(u,a*x)*bessel_j(v,a*x),x),
-  forget(notequal(u+v-1,0)),
-  r);
+check_toi(x^(-u-v+1)*bessel_j(u,a*x)*bessel_j(v,a*x),x,notequal(u+v-1,0));
 (bessel_j(u,a*x)*bessel_j(v,a*x)
   +bessel_j(u-1,a*x)*bessel_j(v-1,a*x))*x^(-v-u+2)/(2*(-v-u+1));
-block([r],
-  assume(equal(u+v-1,0)),
-  r:check_toi(x^(-u-v+1)*bessel_j(u,a*x)*bessel_j(v,a*x),x),
-  forget(equal(u+v-1,0)),
-  r);
+check_toi(x^(-u-v+1)*bessel_j(u,a*x)*bessel_j(v,a*x),x,equal(u+v-1,0));
 false;
+
 check_toi(bessel_j(2,a*x)*bessel_j(3,a*x)/x^4,x);
 -((bessel_j(2,a*x)*bessel_j(3,a*x)+bessel_j(1,a*x)*bessel_j(2,a*x))/(8*x^3));
-
-

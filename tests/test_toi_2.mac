@@ -97,25 +97,13 @@ check_toi(x^4*hankel_1(3/2,2*x)^2,x);
 ((hankel_1(5/2,2*x)^2+hankel_1(3/2,2*x)^2)*x^5)/8;
 check_toi(x^7*hankel_1(3,2*x)^2,x);
 ((hankel_1(4,2*x)^2+hankel_1(3,2*x)^2)*x^8)/14;
-block([r],
-  assume(notequal(a,-1/2)),
-  r:check_toi(x^(2*a+1)*hankel_2(a,2*x)^2,x),
-  forget(notequal(a,-1/2)),
-  r);
+check_toi(x^(2*a+1)*hankel_2(a,2*x)^2,x,notequal(a,-1/2));
 ((hankel_2(a+1,2*x)^2+hankel_2(a,2*x)^2)*x^(2*a+2))/(2*(2*a+1));
 
 /* DLMF 10.22.7 (ii) with same Bessel function twice and u=v */
-block([r],
-  assume(notequal(u,1/2)),
-  r:check_toi(x^(-2*u+1)*bessel_j(u,a*x)^2,x),
-  forget(notequal(u,1/2)),
-  r);
+check_toi(x^(-2*u+1)*bessel_j(u,a*x)^2,x,notequal(u,1/2));
 ((bessel_j(u,a*x)^2+bessel_j(u-1,a*x)^2)*x^(2-2*u))/(2*(1-2*u));
-block([r],
-  assume(notequal(u,1/4)),
-  r:check_toi(bessel_y(2*u,x)^2*x^(1-4*u),x),
-  forget(notequal(u,1/4)),
-  r);
+check_toi(bessel_y(2*u,x)^2*x^(1-4*u),x,notequal(u,1/4));
 ((bessel_y(2*u-1,x)^2+bessel_y(2*u,x)^2)*x^(2-4*u))/(2*(1-4*u));
 check_toi(hankel_1(3,2*x)^2/x^5,x);
 -((hankel_1(3,2*x)^2+hankel_1(2,2*x)^2)/(10*x^4));
@@ -245,11 +233,7 @@ check_toi(x*bessel_i(1,x),x);
 (%pi*x*(struve_l(0,x)*bessel_i(1,x)-bessel_i(0,x)*struve_l(1,x)))/2;
 check_toi(x^2*bessel_i(2,x),x);
 (3*%pi*(struve_l(1,x)*bessel_i(2,x)-bessel_i(1,x)*struve_l(2,x))*x)/2;
-block([r],
-  assume(notequal(v,1/2)),
-  r:check_toi(x^v*bessel_i(v,x),x),
-  forget(notequal(v,1/2)),
-  r);
+check_toi(x^v*bessel_i(v,x),x,notequal(v,1/2));
 sqrt(%pi)*2^(v-1)*(struve_l(v-1,x)*bessel_i(v,x)
 -bessel_i(v-1,x)*struve_l(v,x))*gamma(v+1/2)*x;
  
@@ -269,11 +253,7 @@ check_toi(%e^-x*bessel_i(0,x),x);
 exp(-x)*x*(bessel_i(0,x)+bessel_i(1,x));
 check_toi(%e^-x*x*bessel_i(1,x),x);
 ((bessel_i(1,x)+bessel_i(2,x))*x^2*%e^-x)/3;
-block([r],
-  assume(notequal(n,-1/2)),
-  r:check_toi(%e^-x*x^n*bessel_i(n,x),x),
-  forget(notequal(n,-1/2)),
-  r);
+check_toi(%e^-x*x^n*bessel_i(n,x),x,notequal(n,-1/2));
 ((bessel_i(n,x)+bessel_i(n+1,x))*x^(n+1)*%e^-x)/(2*n+1);
  
 /* iii.  %e^x*x^-v*bessel_i(v,x) */
@@ -287,11 +267,7 @@ check_toi(%e^-x*bessel_i(1,x)/x,x);
 -((bessel_i(1,x)+bessel_i(0,x))*%e^-x);
 check_toi(%e^-u*bessel_i(3,u)/u^3,u);
 -(((bessel_i(3,u)+bessel_i(2,u))*%e^-u)/(5*u^2));
-block([r],
-  assume(notequal(u,1/2)),
-  r:check_toi(%e^-x*x^-u*bessel_i(u,x),x),
-  forget(notequal(u,1/2)),
-  r);
+check_toi(%e^-x*x^-u*bessel_i(u,x),x,notequal(u,1/2));
 ((bessel_i(u,x)+bessel_i(u-1,x))*x^(1-u)*%e^-x)/(1-2*u);
 
 /* A few bessel_k integrals */
