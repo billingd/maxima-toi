@@ -32,6 +32,8 @@ NIL
 
 Indefinite integrals are keyed using (NIL NIL).
 
-**NOT IMPLEMENTED** Non-constant bounds for definite integrals identified with t.  For example,
+Non-constant bounds for definite integrals identified with t.  For example,
 integrate(f(u),u,0,x) has ulimit t, which will match any expression
 subject to any constraints.
+
+
