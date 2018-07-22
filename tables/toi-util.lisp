@@ -112,7 +112,7 @@
   (let ((parameters nil))
     (labels
       ((e-to-m2 (expr)
-         (let* ((op (if (atom expr) nil (mop expr)))
+         (let* ((op (unless (atom expr) (mop expr)))
 		(l `((,op))))
 	   (cond
 	    ((eq expr x) `(,x varp))
@@ -163,7 +163,7 @@
 ;; Will preserve duplicates in input expression
 (defun toi-parameter-list (e x)
   (cond 
-    ((atom e) (if (toi-parameter-p e x) `(,e) nil))
+    ((atom e) (when (toi-parameter-p e x) `(,e)))
     (t (mapcan (lambda (ee) (toi-parameter-list ee x)) (rest e)))))
 
 ;; Sorted list of the parameters in an expression from table of integrals
@@ -199,8 +199,7 @@
 ;; FIXME: Not careful about creating or destroying terms
 (defun toi-sort-expr (e l1 l2)
   (labels
-    ((freeofl2 (l e) 
-	       (loop for x in l always (freeof x e)))
+    ((freeofl2 (l e) (loop for x in l always (freeof x e)))
      (toi-order-fn (e)
         (if (freeofl2 l2 e)
 	  (if (freeofl2 l1 e) 0 1)
@@ -211,18 +210,16 @@
        (cond
 	((atom e) e)
 	((member (mop e) '(mplus mtimes) :test #'eql)
-          (cons `(,(mop e))
-		(stable-sort 
-		  (mapcar #'toi-sort-expr2 (rest e)) 
-		  #'toi-sort-key)))
-	(t (cons `(,(mop e)) (mapcar #'toi-sort-expr2 (rest e)))))))
+          `((,(mop e))
+	    ,@(stable-sort (mapcar #'toi-sort-expr2 (rest e)) #'toi-sort-key)))
+	(t `((,(mop e)) ,@(mapcar #'toi-sort-expr2 (rest e)))))))
     (toi-sort-expr2 e)))
 
 (defun toi-remove-simp (ex)
   "delete SIMP from operators in expresion ex"
   (cond
    ((atom ex) ex)
-   (t (cons `(,(mop ex)) (mapcar #'toi-remove-simp (rest ex))))))
+   (t `((,(mop ex)) ,@(mapcar #'toi-remove-simp (rest ex))))))
 
 (defun toi-remove-$ (ex)
   "remove leading $ from symbol names in expression ex"
@@ -234,7 +231,7 @@
   "remove SIMP and leading $ from symbol names in expression ex"
   (cond
    ((atom ex) (toi-symbol-no-$ ex))
-   (t (cons `(,(mop ex)) (mapcar #'toi-remove-simp-$ (rest ex))))))
+   (t `((,(mop ex)) ,@(mapcar #'toi-remove-simp-$ (rest ex))))))
 
 ;; Given an atom
 ;; - if it is a symbol with a leading $ in name, and it isn't a
