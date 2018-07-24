@@ -7,6 +7,31 @@ It is generated with the command `make` in this directory.
 
 Once generated it can be moved to the parent directory.  The generated file should be functionally equivalent to the file in the parent directory.  I have been not (yet) been able to eliminate all white space differences.
 
+## Design philosophy
+
+The design intent is to have an easily maintainable table of integrals that will complement - and perhaps be included in - the maxima `integrate()` function.
+
+* entries are human readable and are specified with minimum data.  The minimal entry below for `x*bessel_j(0,x)` is the ideal.
+* existing maxima machinery is used when possible
+  * m2 for pattern matching
+  * integrate() for simplifying integrals
+* pre-processing and table generation using maxima and lisp (rather than python, perl, sed and/or awk)
+
+This led to the following decisions
+
+* table entries are
+  * lisp structures
+  * pre-processed from sufficient but incomplete data
+  * not built as part of the maxima build process.  Rather, a working maxima is a requirement.
+* the `integral` and `integrand` are human-readable strings containing maxima expressions
+* generate `integrand2` and `integral2` expressions, but allow them to be specified
+* allow the form of the result `integral2` to be as general as possible
+  * a maxima expression in lisp format,
+  * a lisp lambda function that returns a maxima expression, or
+  * a lisp function that returns a maxima expression
+* attempt to generate the m2 patterns from the integrand.  The initial table of entries has approximately 180 entries and the m2 pattern is generated for 2/3 of cases.
+* the constraints on parameters can be part of the m2 pattern, a separate constraint or part of the integral function. This has simplified the pattern generation and allows entry authors the freedom to explore alternatives.
+
 ## Table entry
 
 Each entry in the table of integrals is defined by a structure toi-entry.
