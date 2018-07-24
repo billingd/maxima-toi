@@ -17,4 +17,7 @@ expr_to_m2(a+x,x);
 "((MPLUS) ((COEFFPT) ($A FREEVAR)) ($X VARP))";
 expr_to_m2(sin(x),x);
 "((%SIN) ($X VARP))";
-
+expr_to_m2(hankel_1(1,y)*y,y);
+"((MTIMES) ((%HANKEL_1) 1 ($Y VARP)) ($Y VARP))";
+expr_to_m2(x^(p+1)*hankel_2(p,x),x);
+"((MTIMES) ((%HANKEL_2) ($P FREEVAR) ($X VARP)) ((MEXPT) ($X VARP) ((MPLUS) 1 ((COEFFPT) ($P_ EQUAL $P)))))";
