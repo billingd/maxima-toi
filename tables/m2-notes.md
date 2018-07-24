@@ -281,6 +281,48 @@ Notes:
 - expr is analysed as a sum
 - predictate `equal-times-minus-one` to relate `c` and `-c`
 
+## Lessons learned
+
+A few notes on lessons learned.
+
+### Matching pattern for c\*x to expression a\*x+x
+
+This is (2018-07-24) an expected failure in the testsuite.
+
+* The table entry is `"x*bessel_c(p,a*x)^2"` ("GR 5.54.1").
+* The failing case is `x*bessel_j(b+4,a*x+x)^2`
+
+The automatically generated m2 pattern that fails in this case is 
+<pre>
+((MTIMES) 
+  ((MEXPT) 
+    ((%BESSEL_J) 
+      (P FREEVAR) 
+      ((MTIMES) ((COEFFTT) (A FREEVAR)) (X VARP)))
+    2) 
+  (X VARP))
+</pre>
+
+Playing around with the various terms I found that there was a failure to match `a*x+x` using `((MTIMES) ((COEFFTT) (A FREEVAR)) (X VARP)))`.
+
+Blindly changing `COEFFTT` to `COEFFTP`, `COEFFPT` or `COEFFPP` didn't help.  Inspired by m2-asin in hypgeo.lisp (above) we find the following  matches the sub-expression `a*x+x`.
+
+<pre>
+((mplus) ((coeffpt) (a nonzerp) (x varp)) ((coeffpp) (zz equal 0)))
+</pre>
+
+Test it.
+
+<pre>
+(%i1) e:a*x+x$
+(%i2) to_lisp()$
+
+MAXIMA> (m2 $e '((mplus) ((coeffpt) (a nonzerp) (x varp)) ((coeffpp) (zz zerp))))
+((ZZ . 0) (A (MPLUS SIMP) 1 $A) (X . $X) (X . $X))
+</pre>
+
+The failing pattern is generated.  I will fix the pattern generator rather work around this specific case.  
+
 ## References
 
 1. Moses, Joel. 1967. ["Symbolic Integration"](http://www.softwarepreservation.org/projects/LISP/MIT/MIT-LCS-TR-047-corrected-ocr.pdf), MIT-LCS-TR-047, MIT
