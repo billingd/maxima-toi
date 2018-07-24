@@ -443,4 +443,5 @@
 ;; for testing
 (defmfun $expr_to_m2 (expr x)
   "maxima interface to expr-to-m2 for testing"
-  (format nil "~s" (expr-to-m2 expr x)))
+  (let ((*print-pretty* nil))
+    (format nil "~s" (expr-to-m2 expr x))))
