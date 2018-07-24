@@ -248,7 +248,7 @@ check_toi(expintegral_si(a*x)^2,x);
  +a*x*expintegral_si(a*x)^2-expintegral_si(2*a*x))/a;
 
 /* G&R 5.33.3 */
-check_toi(expintegral_si(a*x)*expintegral_ci(b*x),x,assume(notequal(a,b)));
+check_toi(expintegral_si(a*x)*expintegral_ci(b*x),x,notequal(a,b));
 x*expintegral_si(a*x)*expintegral_ci(b*x)
  +(cos(a*x)*expintegral_ci(b*x)/a)-(sin(b*x)*expintegral_si(a*x)/b)
  -((1/(2*a)+1/(2*b))*expintegral_ci((a+b)*x))
