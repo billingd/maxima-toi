@@ -1,0 +1,20 @@
+/* test_toi_5.mac 
+
+ Unit tests of m2 pattern generator */
+
+(load("../tables/toi-util.lisp"),0)$
+0;
+
+expr_to_m2(x,x);
+"($X VARP)";
+expr_to_m2(1,x);
+"1";
+expr_to_m2(1+%pi,x);
+"((MPLUS) 1 $%PI)";
+expr_to_m2(a,x);
+"($A FREEVAR)";
+expr_to_m2(a+x,x);
+"((MPLUS) ((COEFFPT) ($A FREEVAR)) ($X VARP))";
+expr_to_m2(sin(x),x);
+"((%SIN) ($X VARP))";
+
