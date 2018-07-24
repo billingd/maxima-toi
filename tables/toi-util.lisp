@@ -439,3 +439,8 @@
     (dolist (s  variables)
       (push `(,s . ,(toi-$symbol s)) sub))
     (mfuncall '$string (subliss sub e))))
+
+;; for testing
+(defmfun $expr_to_m2 (expr x)
+  "maxima interface to expr-to-m2 for testing"
+  (format nil "~s" (expr-to-m2 expr x)))
