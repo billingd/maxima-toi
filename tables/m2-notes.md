@@ -321,6 +321,12 @@ MAXIMA> (m2 $e '((mplus) ((coeffpt) (a nonzerp) (x varp)) ((coeffpp) (zz zerp)))
 ((ZZ . 0) (A (MPLUS SIMP) 1 $A) (X . $X) (X . $X))
 </pre>
 
+A little experimentation shows that `((mplus) ((coeffpt) (a freevar0) (x varp)))` is sufficient.
+<pre>
+MAXIMA> (m2 $e '((mplus) ((coeffpt) (a freevar0) (x varp))))
+((A (MPLUS SIMP) 1 $A) (X . $X) (X . $X))
+</pre>
+
 The failing pattern is generated.  I will fix the pattern generator rather work around this specific case.  
 
 ## References
