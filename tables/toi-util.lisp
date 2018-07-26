@@ -138,18 +138,14 @@
    ((top-level-parameter-p expr x)
     ;; there is a parameter at the top level, wrap in (coefftt)
     `((mtimes)
-      ;; ((coefftt)
-      ;;  ,@(mapcar (lambda (e) (expr-to-m2-expr e x)) (rest expr)))))
+      ;; this may be better
+      ;; ((coefftt) ,@(mapcar #'(expr-to-m2-expr (rest expr)))))
       ,@(mapcar
 	 (lambda (e)
 	   (if (toi-parameter-p e x)
 	       `((coefftt) ,(expr-to-m2-expr e))
 	     (expr-to-m2-expr e)))
 	 (rest expr))))
-   ;;((toi-parameter-p e x)
-    ;; naked parameter
-    ;;`((coefftt) ,@(expr-to-m2 e x pl))
-    ;; default
     (t
      `((mtimes) ,@(mapcar #'expr-to-m2-expr (rest expr))))))
 
