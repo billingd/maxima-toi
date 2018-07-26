@@ -315,7 +315,9 @@ Test it.
 
 <pre>
 (%i1) e:a*x+x$
-(%i2) to_lisp()$
+(%i2) e2:a*x$
+(%i3) e3:2*x$
+(%i4) to_lisp()$
 
 MAXIMA> (m2 $e '((mplus) ((coeffpt) (a nonzerp) (x varp)) ((coeffpp) (zz zerp))))
 ((ZZ . 0) (A (MPLUS SIMP) 1 $A) (X . $X) (X . $X))
@@ -325,6 +327,10 @@ A little experimentation shows that `((mplus) ((coeffpt) (a freevar0) (x varp)))
 <pre>
 MAXIMA> (m2 $e '((mplus) ((coeffpt) (a freevar0) (x varp))))
 ((A (MPLUS SIMP) 1 $A) (X . $X) (X . $X))
+MAXIMA> (m2 $e2 '((mplus) ((coeffpt) (a freevar0) (x varp))))
+((A . $A) (X . $X))
+MAXIMA> (m2 $e3 '((mplus) ((coeffpt) (a freevar0) (x varp))))
+((A . 2) (X . $X))
 </pre>
 
 The failing pattern is generated.  I will fix the pattern generator rather work around this specific case.  
