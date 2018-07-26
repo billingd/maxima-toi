@@ -180,11 +180,11 @@
     ;; This is only a partial solution
     `(,(parameter_ e) equal ,e)))
 
+) ;; end of (let (parameters-seen x)
+
 (defun parameter_ (e)
   "Add _ to parameter name"
   (intern (concatenate 'string (symbol-name e) "_")))
-
-) ;; end of (let (parameters-seen x)
 
 ;; Return a list of parameters in an expression from table of integrals
 ;; x is integration variable
