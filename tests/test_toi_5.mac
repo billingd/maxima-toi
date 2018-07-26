@@ -1,6 +1,6 @@
 /* test_toi_5.mac 
 
- Unit tests of m2 pattern generator */
+ Unit tests of m2 pattern generator expr-to-m2 */
 
 (load("../tables/toi-util.lisp"),0)$
 0;
