@@ -108,55 +108,87 @@
 ;; - is the ordering correct?
 ;; - don't detect if e_ is also a parameter
 ;; - can't match to numeric values, eg p=2 and p-1=1
-(defun expr-to-m2 (expr x)
-  (let ((parameters nil))
-    (labels
-      ((e-to-m2 (expr)
-         (let* ((op (unless (atom expr) (mop expr)))
-		(l `((,op))))
-	   (cond
-	    ((eq expr x) `(,x varp))
-	    ((maxima-constantp expr) expr)
-	    ((atom expr)
-	     (if (member expr parameters) ; duplicate parameter?
-		 (duplicate-parameter-pattern expr)
-	         (first-parameter-pattern expr)))
-  
-	      ;; special handling of mtimes
-	      ;; if there is a parameter at the top level, wrap in (coefftt)
-	      ((and (eq op 'mtimes) (top-level-parameter-p expr x))
-	       (dolist (e (cdr expr))
-		 (cond
-		  ((toi-parameter-p e x) 
-		   (push `((coefftt) ,(e-to-m2 e)) l))
-		  (t (push (e-to-m2 e) l))))
-	       (nreverse l))
- 
-	      ;; special handling of mplus
-	      ;; if there is a parameter at the top level, wrap in (coeffpt)
-	      ((and (eq op 'mplus) (top-level-parameter-p expr x))
-	       (dolist (e (cdr expr))
-		 (cond
-		  ((toi-parameter-p e x)
-		   (push `((coeffpt) ,(e-to-m2 e)) l))
-		  ((atom e) (push (e-to-m2 e) l))
-		  ((eq (mop e) 'mtimes)
-		   (let ((ll (list '(coeffpt))))
-		     (dolist (ee (cdr e)) (push (e-to-m2 ee) ll))
-		     (push (nreverse ll) l)))
-		  (t (push (e-to-m2 e) l))))
-	       (nreverse l))
+(let (parameters-seen x)
 
-	      (t (append `((,op)) (mapcar #'e-to-m2 (rest expr)))))))
-	(first-parameter-pattern (e); first occurence in expression
-	  (push e parameters) ; add e to list of parameters
-	  `(,e freevar))
-        (duplicate-parameter-pattern (e) ; subsequent occurence in expression
-	  ;; Match new symbol (add _) to e -> (e_ equal e)
-          ;; This is only a partial solution
-	  `(,(intern (concatenate 'string (symbol-name e) "_")) equal ,e))
-       )
-      (e-to-m2 expr))))
+(defun expr-to-m2 (expr varx)
+  "Generate m2 pattern to match expr with var varx"
+  (setq parameters-seen nil)
+  (setq x varx)
+  (expr-to-m2-expr expr))
+  
+(defun expr-to-m2-expr (expr)
+  "Generate m2 pattern to match expr with var x"
+  (cond
+   ((eq expr x) `(,x varp))
+   ((maxima-constantp expr) expr)
+   ((atom expr) ; a parameter
+    (expr-to-m2-parameter expr))
+   ((eq (mop expr) 'mtimes) ; special treatment for mtimes
+    (expr-to-m2-mtimes expr))
+   ((eq (mop expr) 'mplus) ; special treatment for mplus
+    (expr-to-m2-mplus expr))
+   (t
+    `((,(mop expr)) ,@(mapcar #'expr-to-m2-expr (rest expr))))))
+
+;; Process a (mtimes) expr in expr-to-m2
+;; pl is a list of discovered parameters
+(defun expr-to-m2-mtimes (expr)
+  "Generate m2 pattern to match (mtimes) expr with var x"
+  (cond
+   ((top-level-parameter-p expr x)
+    ;; there is a parameter at the top level, wrap in (coefftt)
+    `((mtimes)
+      ;; ((coefftt)
+      ;;  ,@(mapcar (lambda (e) (expr-to-m2-expr e x)) (rest expr)))))
+      ,@(mapcar
+	 (lambda (e)
+	   (if (toi-parameter-p e x)
+	       `((coefftt) ,(expr-to-m2-expr e))
+	     (expr-to-m2-expr e)))
+	 (rest expr))))
+   ;;((toi-parameter-p e x)
+    ;; naked parameter
+    ;;`((coefftt) ,@(expr-to-m2 e x pl))
+    ;; default
+    (t
+     `((mtimes) ,@(mapcar #'expr-to-m2-expr (rest expr))))))
+
+;; Process a (mplus) expr in expr-to-m2
+;; pl is a list of discovered parameters
+(defun expr-to-m2-mplus (expr)
+  "Generate m2 pattern to match (mplus) expr with var x"
+  (cond
+   ((top-level-parameter-p expr x)
+   ;; there is a parameter at the top level, wrap in (coeffpt)
+    `((mplus)
+       ,@(mapcar
+	  (lambda (e)
+	    (if (toi-parameter-p e x)
+		`((coeffpt) ,(expr-to-m2-expr e))
+	      (expr-to-m2-expr e)))
+	  (rest expr))))
+   ((atom expr) expr)
+    ;; default
+    (t
+     `((mplus) ,@(mapcar #'expr-to-m2-expr e (rest expr))))))
+
+(defun expr-to-m2-parameter (e)
+  "Generate m2 pattern to match parameter e with var x"
+  (if (not (member e parameters-seen))
+      ;; first occurrence of parameter
+      (progn
+	(push e parameters-seen)
+	`(,e freevar))
+    ;; subsequent occurrence of paramater
+    ;; Match new symbol (add _) to e -> (e_ equal e)
+    ;; This is only a partial solution
+    `(,(parameter_ e) equal ,e)))
+
+(defun parameter_ (e)
+  "Add _ to parameter name"
+  (intern (concatenate 'string (symbol-name e) "_")))
+
+) ;; end of (let (parameters-seen x)
 
 ;; Return a list of parameters in an expression from table of integrals
 ;; x is integration variable
